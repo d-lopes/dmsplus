@@ -99,7 +99,7 @@ COPY src/create-database.sql /DATA/tmp/create-database.sql
 COPY src/setup-database.sh /DATA/tmp/setup-database.sh
 COPY src/get-scans-folder-ID.sql /DATA/tmp/get-scans-folder-ID.sql
 COPY src/add-env-vars.sh /DATA/tmp/add-env-vars.sh
-RUN chmod +x /DATA/tmp/setup-database.sh
+RUN chmod +x /DATA/tmp/setup-database.sh \
 	&& chmod +x /DATA/tmp/add-env-vars.sh
 
 # extract webapp for SeedDMS
@@ -172,7 +172,7 @@ COPY src/startup.sh /root/startup.sh
 COPY src/crontab /etc/crontab 
 
 # make scripts executable
-RUN chmod +x /root/watcher.sh
+RUN chmod +x /root/watcher.sh \
 	&& chmod +x /root/startup.sh
 	
 # -------------------------------------------
