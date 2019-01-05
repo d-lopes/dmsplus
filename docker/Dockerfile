@@ -14,10 +14,10 @@ ENV MYSQL_ROOT_PASS=s3cret
 
 # install time zone and locales support and make frontend non-interactive
 RUN apt-get update \
-	&& apt-get install -y --no-install-recommends locales tzdata \
+	&& apt-get install -y --no-install-recommends apt-utils locales tzdata \
 	&& locale-gen --purge $LANG \
 	&& echo -e 'LANG="$LANG"\nLANGUAGE="$LANGUAGE"\n' > /etc/default/locale \
-	&& echo "$TIME_ZONE" > /etc/timezone \
+	&& echo '$TIME_ZONE' > /etc/timezone \
 	&& export DEBIAN_FRONTEND=noninteractive \
 	&& dpkg-reconfigure -f noninteractive tzdata 
 
@@ -27,7 +27,7 @@ RUN apt-get update \
 
 # get dependencies with APT package manager
 RUN apt-get update && apt-get install -y --no-install-recommends \
-  build-essential autoconf automake libtool apt-utils debconf-utils \
+  build-essential autoconf automake libtool debconf-utils \
   libleptonica-dev \
   zlib1g-dev \
   libexempi3 \
@@ -99,14 +99,16 @@ COPY src/create-database.sql /DATA/tmp/create-database.sql
 COPY src/setup-database.sh /DATA/tmp/setup-database.sh
 COPY src/get-scans-folder-ID.sql /DATA/tmp/get-scans-folder-ID.sql
 COPY src/add-env-vars.sh /DATA/tmp/add-env-vars.sh
+RUN chmod +x /DATA/tmp/setup-database.sh
+	&& chmod +x /DATA/tmp/add-env-vars.sh
 
 # extract webapp for SeedDMS
 # ATTENTION: this must happen right here in order to allow mysql to use the included script to create the DB tables
 RUN tar -xvzf /DATA/tmp/seeddms-5.1.8.tar.gz -C /DATA/tmp
 
 # prepare mysql installation: set root passwort
-RUN echo "mysql-server mysql-server/root_password password ${MYSQL_ROOT_PASS}" | debconf-set-selections \
-	&& echo "mysql-server mysql-server/root_password_again password ${MYSQL_ROOT_PASS}" | debconf-set-selections
+RUN echo 'mysql-server mysql-server/root_password password ${MYSQL_ROOT_PASS}' | debconf-set-selections \
+	&& echo 'mysql-server mysql-server/root_password_again password ${MYSQL_ROOT_PASS}' | debconf-set-selections
 	
 # install mysql for SeedDMS
 RUN apt-get install -y --no-install-recommends mysql-server mysql-client
@@ -149,25 +151,30 @@ COPY src/extensions.php /DATA/seeddms/cache/extensions.php
 # move webapp for SeedDMS to the right place
 # extract vendor folder into PHP folder in order to fix missing dependencies
 RUN a2enmod rewrite \
-#	&& rm /DATA/tmp/seeddms-5.1.8/conf.template/ENABLE_INSTALL_TOOL \
 	&& mv /DATA/tmp/seeddms-5.1.8/conf.template /DATA/tmp/seeddms-5.1.8/conf \
 	&& mv /DATA/tmp/seeddms-5.1.8 /var/www/html \
+	&& chmod 777 -R /var/www/html/seeddms-5.1.8 \
+	&& chmod 777 -R /DATA \
 	&& tar -xvzf /DATA/tmp/vendor.tar.gz -C /usr/share/php
-
+	
 # excute script to set necessary environment variables for PDF file ingestion
-RUN /DATA/tmp/add-env-vars.sh #	&& /bin/bash -c "source ~/.profile"
+RUN /DATA/tmp/add-env-vars.sh
 
 # Remove the junk, including the source version of application and all scripts since we have already installed everything
 RUN rm -rf /tmp/* /var/tmp/* /DATA/tmp \
-  && apt-get remove -y build-essential autoconf automake libtool \
-  && apt-get autoremove -y \
-  && apt-get autoclean -y
+	&& apt-get remove -y build-essential autoconf automake libtool \
+	&& apt-get autoremove -y \
+	&& apt-get autoclean -y
 
 # copy scripts for startup, automatic watching of input directory and cronjobs
 COPY src/watcher.sh /root/watcher.sh
 COPY src/startup.sh /root/startup.sh
 COPY src/crontab /etc/crontab 
 
+# make scripts executable
+RUN chmod +x /root/watcher.sh
+	&& chmod +x /root/startup.sh
+	
 # -------------------------------------------
 # setup environment
 # --------------------------------------
@@ -177,11 +184,6 @@ VOLUME ["/DATA"]
 
 # expose HTTP and HTTPS ports of the web server
 EXPOSE 80 443
-
-# provide needed access rights
-RUN chmod 777 -R /var/www/html/seeddms-5.1.8 \
-	&& chmod 777 -R /DATA \
-	&& chmod 777 -R /root
 	
 # ---------------
 # start system 
