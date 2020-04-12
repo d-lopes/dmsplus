@@ -1,0 +1,28 @@
+@startuml Document (state machine)
+
+skinparam state {
+  BackgroundColor<<Pseudo>> White
+}
+
+state New: document meta data is\navailable in DMS Webapp
+state Completed: document file is available\nin DMS Webapp
+state Published: document content can be\nsearched in DMS Webapp
+
+state Failed <<Pseudo>>: document creation failed
+
+state EndFailed <<end>>
+state EndSuccess <<end>> 
+
+[*] --> Failed: create document
+note left of Failed: pseudo status:\nthis cannot be\nsaved in DMS\nwebapp since the\ninitial creation via\nAPI already failed 
+Failed --> EndFailed
+
+[*] --> New: create document
+note right of New: document was\nsuccessfully\ncreated via API
+New --> Completed: upload document file
+note right of Completed: document file\nwas successfully\nuploaded via API
+Completed --> Published: verify document content\n(automatically or manually)
+note right of Published: document has\npassed the\ncompleteness\ncheck
+Published --> EndSuccess
+
+@enduml

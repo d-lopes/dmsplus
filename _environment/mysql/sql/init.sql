@@ -1,0 +1,1 @@
+CREATE USER 'dms'@'localhost' IDENTIFIED WITH mysql_native_password BY 'dms_secret';

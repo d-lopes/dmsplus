@@ -1,0 +1,87 @@
+version: "3.5"
+services:
+  
+  # OCR scanner
+  scanner:
+      image: dmsscanner:1.0.0
+      container_name: scanner
+      restart: unless-stopped
+      tty: true
+      environment:
+        DOCUMENT_API_URL: http://webserver/api/documents
+      volumes:
+        - ./directories/inbox:/var/run/inbox
+        - ./directories/err:/var/run/err
+        - ./directories/logs/scanner:/var/run/logs
+      networks:
+        - dms_net
+
+  # Laravel PHP webapp
+  app:
+      image: dmsweb:1.0.0
+      container_name: app
+      restart: unless-stopped
+      tty: true
+      environment:
+        SERVICE_NAME: app
+        SERVICE_TAGS: dev
+        DB_HOST: database
+        DB_DATABASE: dms_web
+        DB_USERNAME: dms
+        DB_PASSWORD: dms_secret
+      volumes:
+        - webdata:/var/www
+        - ./directories/storage:/var/www/public/files
+        - ./directories/logs/web:/var/www/storage/logs
+        - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      networks:
+        - dms_net
+
+  #Nginx Service
+  webserver:
+      image: nginx:alpine
+      container_name: webserver
+      restart: unless-stopped
+      tty: true
+      ports:
+        - "8080:80"
+      volumes:
+        - webdata:/var/www
+        - ./directories/storage:/var/www/public/files
+        - ./nginx/conf.d/:/etc/nginx/conf.d/
+      networks:
+        - dms_net
+      
+  # MySQL database
+  database:
+      image: mysql:8.0
+      container_name: database
+      restart: unless-stopped
+      tty: true
+      ports:
+        - 3306:3306
+      volumes:
+          - dbdata:/var/lib/mysql
+          - ./mysql/my.cnf:/etc/mysql/my.cnf
+          - ./mysql/sql:/docker-entrypoint-initdb.d
+      networks:
+        - dms_net
+      environment:
+        MYSQL_DATABASE: dms_web
+        MYSQL_ROOT_PASSWORD:
+        MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+        MYSQL_USER: dms
+        MYSQL_PASSWORD: dms_secret
+        SERVICE_TAGS: dev
+        SERVICE_NAME: mysql
+
+#Docker Networks
+networks:
+  dms_net:
+    driver: bridge
+
+#Volumes
+volumes:
+  dbdata:
+    driver: local
+  webdata:
