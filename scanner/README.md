@@ -1,0 +1,1 @@
+OCR Utility based on OCRmyPDF 9.7 (see https://github.com/jbarlow83/OCRmyPDF)
