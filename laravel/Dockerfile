@@ -43,8 +43,9 @@ RUN chmod 775 -R /var/www/storage
 # tweak php configuration
 RUN mv config/php/local.ini /usr/local/etc/php/conf.d
 
-# create symlinks for files to collect
-RUN cd public && ln -s /var/www/storage/app/documents files
+# setup file structure for webapp to work
+RUN mkdir /var/www/storage/search && \
+    cd public && ln -s /var/www/storage/app/documents files
 
 # add enrypoint script and make it executable
 RUN mv docker-entrypoint.sh /var/run && \
