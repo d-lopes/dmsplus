@@ -1,42 +1,46 @@
 version: "3.5"
-services:
-  
-  # OCR scanner
+
+services:  
+
+  # OCR utility
   scanner:
-      image: dmsscanner:1.0.0
+      image: dmsscanner:1.0.0 #dl0pes/dmsplus:latest-scanner
       container_name: scanner
       restart: unless-stopped
       tty: true
       environment:
-        DOCUMENT_API_URL: http://webserver/api/documents
+        WEB_HOST: webserver
       volumes:
         - ./directories/inbox:/var/run/inbox
         - ./directories/err:/var/run/err
         - ./directories/logs/scanner:/var/run/logs
       networks:
         - dms_net
+      depends_on: 
+        - webserver
 
-  # Laravel PHP webapp
+  # webapp
   app:
-      image: dmsweb:1.0.0
+      image: dmsweb:1.0.0 #dl0pes/dmsplus:latest-webapp
       container_name: app
       restart: unless-stopped
       tty: true
+      env_file: 
+        - ./dms.env
       environment:
+        DB_HOST: database
         SERVICE_NAME: app
         SERVICE_TAGS: dev
-        DB_HOST: database
-        DB_DATABASE: dms_web
-        DB_USERNAME: dms
-        DB_PASSWORD: dms_secret
       volumes:
         - webdata:/var/www
-        - ./directories/storage:/var/www/public/files
+        - ./directories/storage/files:/var/www/public/files
+        - ./directories/storage/search:/var/www/storage/search
         - ./directories/logs/web:/var/www/storage/logs
-        - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
       networks:
         - dms_net
-
+      depends_on: 
+        - database
+        
   #Nginx Service
   webserver:
       image: nginx:alpine
@@ -47,34 +51,35 @@ services:
         - "8080:80"
       volumes:
         - webdata:/var/www
-        - ./directories/storage:/var/www/public/files
+        - ./directories/storage/files:/var/www/public/files
         - ./nginx/conf.d/:/etc/nginx/conf.d/
       networks:
         - dms_net
-      
+      depends_on: 
+        - app
+
   # MySQL database
   database:
       image: mysql:8.0
       container_name: database
+      hostname: database
       restart: unless-stopped
       tty: true
       ports:
         - 3306:3306
       volumes:
-          - dbdata:/var/lib/mysql
+          - ./directories/storage/db:/var/lib/mysql
           - ./mysql/my.cnf:/etc/mysql/my.cnf
-          - ./mysql/sql:/docker-entrypoint-initdb.d
       networks:
         - dms_net
+      env_file: 
+        - ./dms.env
       environment:
-        MYSQL_DATABASE: dms_web
         MYSQL_ROOT_PASSWORD:
         MYSQL_ALLOW_EMPTY_PASSWORD: "true"
-        MYSQL_USER: dms
-        MYSQL_PASSWORD: dms_secret
         SERVICE_TAGS: dev
         SERVICE_NAME: mysql
-
+        
 #Docker Networks
 networks:
   dms_net:
@@ -82,6 +87,4 @@ networks:
 
 #Volumes
 volumes:
-  dbdata:
-    driver: local
   webdata:

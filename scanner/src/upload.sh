@@ -3,6 +3,7 @@
 # commen declarations
 LOGFILE="/var/run/logs/`date +%Y-%m-%d`_watch.log"
 BASE_DIR=/var/run
+DOCUMENT_API_URL=http://$WEB_HOST/api/documents
 
 # skip invalid input - we expect a file path
 if [ -z "$1" ]; then

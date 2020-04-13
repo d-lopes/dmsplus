@@ -1,5 +1,7 @@
 FROM php:7.3-fpm
 
+LABEL maintainer="tech@dlopes.de"
+
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -38,6 +40,9 @@ WORKDIR /var/www
 COPY --chown=www:www . /var/www
 RUN chmod 775 -R /var/www/storage
 
+# tweak php configuration
+RUN mv config/php/local.ini /usr/local/etc/php/conf.d
+
 # create symlinks for files to collect
 RUN cd public && ln -s /var/www/storage/app/documents files
 
@@ -49,7 +54,7 @@ RUN mv docker-entrypoint.sh /var/run && \
 USER www
 
 # expose web folder so that it can be shared with nginx server
-VOLUME [ "/var/www", "/var/www/public/files", "/var/www/storage/logs" ]
+VOLUME [ "/var/www", "/var/www/public/files", "/var/www/storage/search", "/var/www/storage/logs" ]
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000

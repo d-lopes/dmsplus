@@ -1,5 +1,7 @@
 FROM jbarlow83/ocrmypdf:v9.7.0
 
+LABEL maintainer="tech@dlopes.de"
+
 # install needed dependencies
 RUN apt-get update && apt-get install -y cron curl jq
 

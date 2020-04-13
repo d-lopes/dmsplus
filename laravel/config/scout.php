@@ -98,7 +98,7 @@ return [
     */
 
     'tntsearch' => [
-        'storage'  => storage_path(),
+        'storage'  => storage_path('search'),
         'fuzziness' => env('TNTSEARCH_FUZZINESS', false),
         'fuzzy' => [
             'prefix_length' => 2,

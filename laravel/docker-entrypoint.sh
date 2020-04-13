@@ -6,8 +6,7 @@ while ! nc -vz $DB_HOST 3306 ; do
 done
 
 # run artisan database scripts
-# TODO: switch back to "php artisan migrate" once we have finished the first release
-php artisan migrate:fresh
+php artisan migrate
 php artisan db:seed
 
 # start workspace process
