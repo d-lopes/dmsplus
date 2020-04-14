@@ -1,9 +1,8 @@
 #!/bin/bash
 
-# on initial startup run composer install & generate the laravel app key
+# on initial startup generate the laravel app key
 INIT_INDICATOR_FILE='/var/www/storage/initialized'
 if ! [[ -f "$INIT_INDICATOR_FILE" ]]; then 
-  composer install
   php artisan key:generate
   echo "true" >> $INIT_INDICATOR_FILE
 fi

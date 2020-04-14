@@ -40,6 +40,9 @@ WORKDIR /var/www
 COPY --chown=www:www . /var/www
 RUN chmod 775 -R /var/www/storage
 
+# install dependencies of laravel application
+RUN composer install
+  
 # tweak php configuration
 RUN mv config/php/local.ini /usr/local/etc/php/conf.d
 
