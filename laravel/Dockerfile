@@ -36,19 +36,22 @@ RUN useradd -u 1000 -ms /bin/bash -g www www
 # Set working directory
 WORKDIR /var/www
 
-# Copy existing application directory permissions
+# Copy existing application directory
 COPY --chown=www:www . /var/www
-RUN chmod 775 -R /var/www/storage
-
+    
 # install dependencies of laravel application
 RUN composer install
+
+# setup file structure for webapp to work
+RUN mkdir /var/www/storage/logs && \
+    mkdir /var/www/storage/search && \
+    cd public && ln -s /var/www/storage/app/documents files
+
+# set application directory permissions
+RUN chmod 775 -R /var/www/storage
   
 # tweak php configuration
 RUN mv config/php/local.ini /usr/local/etc/php/conf.d
-
-# setup file structure for webapp to work
-RUN mkdir /var/www/storage/search && \
-    cd public && ln -s /var/www/storage/app/documents files
 
 # add enrypoint script and make it executable
 RUN mv docker-entrypoint.sh /var/run && \

@@ -48,11 +48,11 @@ services:
       restart: unless-stopped
       tty: true
       ports:
-        - "8080:80"
+        - "9000:80"
       volumes:
         - webdata:/var/www
         - ./directories/storage/files:/var/www/public/files
-        - ./nginx/conf.d/:/etc/nginx/conf.d/
+        - ./nginx.conf:/etc/nginx/conf.d/app.conf
       networks:
         - dms_net
       depends_on: 
@@ -69,7 +69,7 @@ services:
         - 3306:3306
       volumes:
           - ./directories/storage/db:/var/lib/mysql
-          - ./mysql/my.cnf:/etc/mysql/my.cnf
+          - ./mysql.conf:/etc/mysql/my.cnf
       networks:
         - dms_net
       env_file: 
