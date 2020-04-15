@@ -43,8 +43,8 @@ COPY --chown=www:www . /var/www
 RUN composer install
 
 # setup file structure for webapp to work
-RUN mkdir /var/www/storage/logs && \
-    mkdir /var/www/storage/search && \
+RUN mkdir -p /var/www/storage/logs && \
+    mkdir -p /var/www/storage/search && \
     cd public && ln -s /var/www/storage/app/documents files
 
 # set application directory permissions
