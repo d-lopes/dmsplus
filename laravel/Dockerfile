@@ -32,9 +32,16 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Set working directory
 WORKDIR /var/www
 
-# Copy existing application directory
-COPY . /var/www
-    
+# Copy existing application directory and enrypoint script
+COPY --chown=www-data:www-data . /var/www
+COPY --chown=www-data:www-data docker-entrypoint.sh /var/run 
+
+# tweak php configuration
+RUN mv config/php/local.ini /usr/local/etc/php/conf.d
+
+# switch to existing www user
+USER www-data
+
 # install dependencies of laravel application
 RUN composer install
 
@@ -43,14 +50,9 @@ RUN mkdir -p /var/www/storage/logs && \
     mkdir -p /var/www/storage/search && \
     cd public && ln -s /var/www/storage/app/documents files
 
-# set application directory permissions
-RUN chmod 777 -R /var/www/storage
-  
-# tweak php configuration
-RUN mv config/php/local.ini /usr/local/etc/php/conf.d
-
-# add enrypoint script and make it executable
-RUN mv docker-entrypoint.sh /var/run && \
+# set application's storage directory to R/W permissions
+#   and make the enrypoint script executable
+RUN chmod 755 -R /var/www/storage && \
     chmod 744 /var/run/docker-entrypoint.sh
 
 # expose web folder so that it can be shared with nginx server

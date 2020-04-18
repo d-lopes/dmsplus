@@ -3,6 +3,10 @@
 # on initial startup generate the laravel app key
 INIT_INDICATOR_FILE='/var/www/storage/initialized'
 if ! [[ -f "$INIT_INDICATOR_FILE" ]]; then 
+
+  # rewrite ownership again, since it has been changed due to mounting of docker volumns
+  chown www-data:www-data -R /var/www/storage
+  
   php artisan key:generate
   echo "true" >> $INIT_INDICATOR_FILE
 fi

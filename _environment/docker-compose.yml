@@ -50,9 +50,12 @@ services:
       ports:
         - "9000:80"
       volumes:
-        - webdata:/var/www
         - ./directories/storage/files:/var/www/public/files
         - ./nginx/:/etc/nginx/conf.d/
+        - type: volume
+          source: webdata
+          target: /var/www
+          read_only: true
       networks:
         - dms_net
       depends_on: 
