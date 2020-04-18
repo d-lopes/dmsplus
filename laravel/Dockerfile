@@ -29,15 +29,11 @@ RUN docker-php-ext-install gd
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Add user for laravel application
-RUN groupadd -g 1000 www
-RUN useradd -u 1000 -ms /bin/bash -g www www
-
 # Set working directory
 WORKDIR /var/www
 
 # Copy existing application directory
-COPY --chown=www:www . /var/www
+COPY . /var/www
     
 # install dependencies of laravel application
 RUN composer install
@@ -56,9 +52,6 @@ RUN mv config/php/local.ini /usr/local/etc/php/conf.d
 # add enrypoint script and make it executable
 RUN mv docker-entrypoint.sh /var/run && \
     chmod 744 /var/run/docker-entrypoint.sh
-
-# Change current user to www
-USER www
 
 # expose web folder so that it can be shared with nginx server
 VOLUME [ "/var/www", "/var/www/public/files", "/var/www/storage/search", "/var/www/storage/logs" ]
