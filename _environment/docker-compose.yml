@@ -21,7 +21,7 @@ services:
 
   # webapp
   app:
-      image: dmsweb:1.0.0 #dl0pes/dmsweb:latest
+      image: dl0pes/dmsweb:latest
       container_name: app
       restart: unless-stopped
       tty: true

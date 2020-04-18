@@ -39,11 +39,11 @@ COPY --chown=www-data:www-data docker-entrypoint.sh /var/run
 # tweak php configuration
 RUN mv config/php/local.ini /usr/local/etc/php/conf.d
 
-# switch to existing www user
-USER www-data
-
 # install dependencies of laravel application
 RUN composer install
+
+# switch to existing www user
+USER www-data
 
 # setup file structure for webapp to work
 RUN mkdir -p /var/www/storage/logs && \
