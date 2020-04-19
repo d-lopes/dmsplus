@@ -21,7 +21,7 @@ services:
 
   # webapp
   app:
-      image: dl0pes/dmsweb:latest
+      image: dmsweb:1.0.0 #dl0pes/dmsweb:latest
       container_name: app
       restart: unless-stopped
       tty: true
@@ -33,7 +33,7 @@ services:
         SERVICE_TAGS: dev
       volumes:
         - webdata:/var/www
-        - ./directories/storage/files:/var/www/public/files
+        - ./directories/storage/files:/var/www/storage/app/documents
         - ./directories/storage/search:/var/www/storage/search
         - ./directories/logs/web:/var/www/storage/logs
       networks:

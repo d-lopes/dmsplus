@@ -48,6 +48,7 @@ USER www-data
 # setup file structure for webapp to work
 RUN mkdir -p /var/www/storage/logs && \
     mkdir -p /var/www/storage/search && \
+    mkdir -p /var/www/storage/app/documents && \
     cd public && ln -s /var/www/storage/app/documents files
 
 # set application's storage directory to R/W permissions
@@ -56,11 +57,10 @@ RUN chmod 755 -R /var/www/storage && \
     chmod 744 /var/run/docker-entrypoint.sh
 
 # expose web folder so that it can be shared with nginx server
-VOLUME [ "/var/www", "/var/www/public/files", "/var/www/storage/search", "/var/www/storage/logs" ]
+VOLUME [ "/var/www", "/var/www/storage/app/documents", "/var/www/storage/search", "/var/www/storage/logs" ]
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
-CMD ["php-fpm"]
 
 # run entrypoint script
 ENTRYPOINT ["/var/run/docker-entrypoint.sh"]
