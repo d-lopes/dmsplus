@@ -42,9 +42,6 @@ RUN mv config/php/local.ini /usr/local/etc/php/conf.d
 # install dependencies of laravel application
 RUN composer install
 
-# switch to existing www user
-USER www-data
-
 # setup file structure for webapp to work
 RUN mkdir -p /var/www/storage/logs && \
     mkdir -p /var/www/storage/search && \
@@ -55,6 +52,7 @@ RUN mkdir -p /var/www/storage/logs && \
 #   and make the enrypoint script executable
 RUN chmod 755 -R /var/www/storage && \
     chmod 744 /var/run/docker-entrypoint.sh
+
 
 # expose web folder so that it can be shared with nginx server
 VOLUME [ "/var/www", "/var/www/storage/app/documents", "/var/www/storage/search", "/var/www/storage/logs" ]
