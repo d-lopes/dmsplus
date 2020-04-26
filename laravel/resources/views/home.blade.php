@@ -9,29 +9,34 @@
 @endif
 
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <form method="POST" action="/documents/search">
-                    @csrf
-
-                    <fieldset>
-                        <div class="card-header">
-                            <legend>Search Documents</legend>
-                        </div>
-                        <div class="card-body">
-                            <div class="input-group mb-3">
-                               <input type="text" class="form-control" name="st" placeholder="search term" aria-label="search term" 
-                                    aria-describedby="button-addon" />
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="submit" id="button-addon">Search</button>
-                                </div>
-                            </div>
-                    </fieldset>
-                </form>
+    <div class="row">
+        <div class="col-sm-6">
+            <legend>Most Recent ({{ count($latestDocuments) }})</legend>
+            
+            <div class="card-body" style="clear: right">
+                <div class="list-group">
+                    @foreach ($latestDocuments as $document)
+                        @include('documents.searchresult')
+                    @endforeach
+                </div>
             </div>
+
+        </div>
+        <div class="col-sm-6">
+            
+            <legend>To Review ({{ count($reviews) }})</legend>
+            
+            <div class="card-body" style="clear: right">
+                <div class="list-group">
+                    @foreach ($reviews as $document)
+                        @include('documents.searchresult')
+                    @endforeach
+                </div>
+            </div>
+                        
         </div>
     </div>
 </div>
+
 
 @endsection

@@ -9,7 +9,15 @@ class Document extends Model
 {
     use Searchable;
 
-    protected $fillable = ['filename', 'content', 'path'];
+    protected $fillable = ['filename', 'content', 'path', 'status'];
+
+    public function markAsPublished() {
+        $this->status = 'published';
+    }
+
+    public function markAsCompleted() {
+        $this->status = 'completed';
+    }
 
      /**
      * Get the index name for the model.

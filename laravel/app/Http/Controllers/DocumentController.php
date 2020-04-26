@@ -13,7 +13,7 @@ class DocumentController extends Controller
         
         $search_term = $request->input('st');
 
-        $documents = Document::search($search_term)->get();
+        $documents = Document::search($search_term)->paginate(10);
 
         return view('documents.search', [
             'documents' => $documents,

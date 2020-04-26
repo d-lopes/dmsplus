@@ -9,6 +9,7 @@
         <div class="row" style="height:calc(100vh - 100px);">
         <div class="col-md-5">
             
+            @if( ! empty($searchterm))
             <div class="container">
                 <form method="POST" action="/documents/search">
                     @csrf
@@ -24,6 +25,7 @@
                     </fieldset>
                 </form>
             </div>
+           @endif 
             
             <div class="container">
                 @include('documents.searchresult')

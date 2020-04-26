@@ -37,8 +37,9 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+            
             <div class="card-body">
-
+                <?php echo $documents->render(); ?>
                 <div class="list-group">
 
                     @foreach ($documents as $document)
@@ -46,8 +47,9 @@
                     @endforeach
 
                 </div>
-
+                <?php echo $documents->render(); ?>
             </div>
+
         </div>
     </div>
 </div>

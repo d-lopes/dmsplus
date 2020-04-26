@@ -24,10 +24,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $documents = [];
+        $documents = Document::where('status', 'published')->latest()->limit(5)->get();
+
+        $reviews = Document::where('status', '<>', 'published')->latest()->limit(5)->get();
 
         return view('home', [
-            'documents' => $documents
+            'latestDocuments' => $documents,
+            'reviews' => $reviews,
+            'searchterm' => ''
         ]);
     }
     

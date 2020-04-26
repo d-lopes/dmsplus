@@ -25,7 +25,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ url('/home') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -37,9 +37,25 @@
                     <ul class="navbar-nav mr-auto">
 
                     </ul>
+  
+
+                    <form class="navbar-nav ml-auto" method="POST" action="/documents/search">
+                        @csrf
+
+                        <fieldset>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="st" placeholder="search term" aria-label="search term" 
+                                            aria-describedby="button-addon" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-sm btn-outline-secondary" type="submit" id="button-addon">Search</button>
+                                    </div>
+                                </div>
+                        </fieldset>
+                    </form>
+             
 
                     <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
+                    <ul class="navbar-nav">
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">

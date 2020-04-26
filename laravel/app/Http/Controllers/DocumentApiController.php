@@ -50,11 +50,18 @@ class DocumentApiController extends Controller
             throw new ModelNotFoundException("resource with Id $id does not exist");
         }
         
+        // save file
         $uploadedFile = $request->file('document');
         $currentDate =  date('Y-m-d');
         $path = $uploadedFile->store($currentDate, ['disk' => 'documents']);
 
+        // update document path and status in DB
         $document->path = $path;
+        if ( !empty ($document->content) ) { 
+            $document->markAsPublished();
+        } else { 
+            $document->markAsCompleted();
+        }
         $document->save();
 
         return Storage::url($path);
