@@ -19,6 +19,16 @@ class Document extends Model
         $this->status = 'incomplete';
     }
 
+    public function saveAndUpdateStatus(array $options = []) {
+        if ( empty ($this->content) || empty ($this->path)) { 
+            $this->markAsIncomplete();
+        } else { 
+            $this->markAsPublished();
+        }
+        
+        $this->save($options);
+    }
+
      /**
      * Get the index name for the model.
      *

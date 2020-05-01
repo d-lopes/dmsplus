@@ -22,6 +22,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::post('/documents/search', 'DocumentController@search')->name('search');
-
-Route::get('/documents/{id}', 'DocumentController@show')->name('show');
+Route::post('/documents/search', 'DocumentController@search')->name('document.search');
+Route::get('/documents/{id}', 'DocumentController@show')->name('document.show');
+Route::post('/documents/{id}/edit', 'DocumentController@edit')->name('document.edit');
+Route::post('/documents/{id}/upload', 'DocumentController@upload')->name('document.upload');
