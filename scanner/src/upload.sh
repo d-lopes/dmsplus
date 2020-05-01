@@ -21,13 +21,17 @@ DOCUMENT_ID="undefined" # this is going to be set later at runtime
 
 # get contents from side car file and delete it (if available) 
 if [ -f "$SIDECAR_FILE" ]; then 
-    CONTENT=$(cat "$SIDECAR_FILE" | tr '\n' ' '| tr -cd '\11\12\15\40-\176')
-    # if content has nothing more than whitespace replace with empty string 
-    #   -> otherwise error occurs during creation of document in DMS webapp
+    CONTENT=$(cat "$SIDECAR_FILE" |tr -cd '\11\12\15\40-\176' |tr '\n' ' '|tr '\\' ' ' |tr '"' ' ')
+    # remove any occurence of ...
+    #   * non ASCII whitespaces, 
+    #   * \n (line breaks), 
+    #   * \ (backslashs) or 
+    #   * " (hyphens)
+    # -> otherwise error occurs during creation of document in DMS webapp
     if [[ -z "${CONTENT// }" ]]; then
         CONTENT=""
     fi
-    rm $SIDECAR_FILE
+    #rm $SIDECAR_FILE
 else 
     CONTENT=""
 fi
