@@ -15,8 +15,8 @@ class Document extends Model
         $this->status = 'published';
     }
 
-    public function markAsCompleted() {
-        $this->status = 'completed';
+    public function markAsIncomplete() {
+        $this->status = 'incomplete';
     }
 
      /**

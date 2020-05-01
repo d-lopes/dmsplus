@@ -14,7 +14,7 @@ class AddStatus2DocumentsTable extends Migration
     public function up()
     {
         Schema::table('documents', function (Blueprint $table) {
-            $table->set('status', ['new', 'completed', 'published'])->default('new');
+            $table->set('status', ['new', 'incomplete', 'published'])->default('new');
         });
     }
 

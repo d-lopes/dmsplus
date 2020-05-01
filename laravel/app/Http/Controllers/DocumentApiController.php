@@ -60,7 +60,7 @@ class DocumentApiController extends Controller
         if ( !empty ($document->content) ) { 
             $document->markAsPublished();
         } else { 
-            $document->markAsCompleted();
+            $document->markAsIncomplete();
         }
         $document->save();
 

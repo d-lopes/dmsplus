@@ -4,7 +4,7 @@
       <small>{{ $document->created_at }}</small>
       @if ($document->status == 'published') 
         <span class="badge badge-success">{{ $document->status }}</span>
-      @elseif ($document->status == 'completed')
+      @elseif ($document->status == 'incomplete')
         <span class="badge badge-warning">{{ $document->status }}</span>
       @else
         <span class="badge badge-secondary">{{ $document->status }}</span>
