@@ -4,7 +4,7 @@ services:
 
   # OCR utility
   scanner:
-      image: dl0pes/dmsocr:1.1.1
+      image: dl0pes/dmsocr:1.1.2
       container_name: scanner
       restart: unless-stopped
       tty: true
@@ -21,7 +21,7 @@ services:
 
   # webapp
   app:
-      image: dl0pes/dmsweb:1.1.1
+      image: dl0pes/dmsweb:1.1.2
       container_name: app
       restart: unless-stopped
       tty: true
