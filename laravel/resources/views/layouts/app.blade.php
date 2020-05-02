@@ -38,7 +38,9 @@
 
                     </ul>
   
-
+                    @guest
+                    <div><!-- nothing to show --></div>
+                    @else
                     <form class="navbar-nav ml-auto" method="POST" action="/documents/search">
                         @csrf
 
@@ -52,7 +54,7 @@
                                 </div>
                         </fieldset>
                     </form>
-             
+                    @endguest
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav">
