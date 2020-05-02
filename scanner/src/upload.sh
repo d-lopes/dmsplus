@@ -15,23 +15,26 @@ fi
 FILE_NAME=$1
 OCRED_FILE=$BASE_DIR/tmp/$FILE_NAME
 SIDECAR_FILE=$BASE_DIR/tmp/$FILE_NAME.txt
+UPLOADED_TXT_FILE=$BASE_DIR/tmp/$FILE_NAME.uploaded.txt
 FAILED_UPLOAD_FILE=$BASE_DIR/err/failed_upload-$FILE_NAME
 ERROR_FILE=$BASE_DIR/err/$FILE_NAME
 DOCUMENT_ID="undefined" # this is going to be set later at runtime
 
 # get contents from side car file and delete it (if available) 
 if [ -f "$SIDECAR_FILE" ]; then 
-    CONTENT=$(cat "$SIDECAR_FILE" |tr -cd '\11\12\15\40-\176' |tr '\n' ' '|tr '\\' ' ' |tr '"' ' ')
-    # remove any occurence of ...
-    #   * non ASCII whitespaces, 
+    cat "$SIDECAR_FILE" |tr '\n' ' ' |tr '\\' '-' |tr '"' ' '  | sed -E 's/( |[^[:print:]])+/ /' > $UPLOADED_TXT_FILE
+    CONTENT=$(cat $UPLOADED_TXT_FILE)
+    # remove (or replace) any occurence of ...
     #   * \n (line breaks), 
+    #   * non-printable chars, 
     #   * \ (backslashs) or 
     #   * " (hyphens)
     # -> otherwise error occurs during creation of document in DMS webapp
     if [[ -z "${CONTENT// }" ]]; then
         CONTENT=""
     fi
-    #rm $SIDECAR_FILE
+    rm $SIDECAR_FILE
+    rm $UPLOADED_TXT_FILE
 else 
     CONTENT=""
 fi

@@ -4,12 +4,13 @@ Change Log
 This overview contains all changes done for the dms+ appliaction since its first release (April 2020).
  Changes are listed by release versions which follow [semantic versioning](https://semver.org).  
 
-## un-released changes
-
-### Features
+## 02.05.2020 - 1.1.1
 
 ### Bugfixes and improvements
-- Nginx CLIENT_MAX_BODY_SIZE increased to 10 MB in order to fix [issue #2](https://github.com/d-lopes/dmsplus/issues/2).  
+- Nginx CLIENT_MAX_BODY_SIZE increased to 10 MB in order to fix [issue #2](https://github.com/d-lopes/dmsplus/issues/2). 
+- file contents reformatting prior to document creation optimized in order to fix [issue #3](https://github.com/d-lopes/dmsplus/issues/3). 
+- sample files for OCR scan added/reworked
+- introduced test script to preview OCR ouput
 
 ## 01.05.2020 - 1.1.0
 
