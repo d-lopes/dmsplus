@@ -22,7 +22,7 @@ DOCUMENT_ID="undefined" # this is going to be set later at runtime
 
 # get contents from side car file and delete it (if available) 
 if [ -f "$SIDECAR_FILE" ]; then 
-    cat "$SIDECAR_FILE" |tr '\n' ' ' |tr '\\' '-' |tr '"' ' '  | sed -E 's/( |[^[:print:]])+/ /' > $UPLOADED_TXT_FILE
+    cat "$SIDECAR_FILE" |tr '\n' ' ' |tr -d '\f' |tr '\\' '-' |tr '"' ' '  | sed -E 's/( |[^[:print:]])+/ /' > $UPLOADED_TXT_FILE
     CONTENT=$(cat $UPLOADED_TXT_FILE)
     # remove (or replace) any occurence of ...
     #   * \n (line breaks), 
