@@ -4,6 +4,11 @@ Change Log
 This overview contains all changes done for the dms+ appliaction since its first release (April 2020).
  Changes are listed by release versions which follow [semantic versioning](https://semver.org).  
 
+## 02.05.2020 - 1.1.2
+
+### Bugfixes and improvements
+- fix document upload error due to pagebreaks in document content which have been reintroduced with fix for [issue #2](https://github.com/d-lopes/dmsplus/issues/2). 
+
 ## 02.05.2020 - 1.1.1
 
 ### Bugfixes and improvements
