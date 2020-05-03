@@ -8,7 +8,7 @@ printenv | sed 's/^\(.*\)$/export \1/g' > /env.sh
 
 # Setup a cron schedule: see https://crontab.guru/ for help
 if [ ! -f "scheduler.txt" ]; then
-    echo "0/15 * * * * flock -xn /home/scanner/watch.lck -c '. /env.sh; /home/scanner/watch.sh'
+    echo "0 * * * * flock -xn /home/scanner/watch.lck -c '. /env.sh; /home/scanner/watch.sh'
     # This extra line makes it a valid cron" > scheduler.txt
 fi
 
