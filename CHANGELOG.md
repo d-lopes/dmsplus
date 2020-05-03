@@ -4,10 +4,10 @@ Change Log
 This overview contains all changes done for the dms+ appliaction since its first release (April 2020).
  Changes are listed by release versions which follow [semantic versioning](https://semver.org).  
 
-## unreleased changes
+## 02.05.2020 - 1.1.3
 
 ## Bugfixes and improvements
-- automatic ingestion of new PDF files increased to every 15 minutes in order to mitigate [issue #12](https://github.com/d-lopes/dmsplus/issues/12)
+- automatic ingestion of new PDF files increased to every hour in order to mitigate [issue #12](https://github.com/d-lopes/dmsplus/issues/12)
 
 ## 02.05.2020 - 1.1.2
 
