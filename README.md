@@ -9,13 +9,13 @@ Currently, the application has the following capabilities:
 * extraction of included texts via OCR scan
 * text search on an index of the OCR'ed files
 * visualization of PDF file in embeded PDF viewer
-* correction of automatically determined text
+* manual correction of determined text after OCR scan
 
 Download
 ========
 
 * [Version 1.1.3](https://github.com/d-lopes/dmsplus/releases/tag/1.1.3)
-* [older version](https://github.com/d-lopes/dmsplus/releases)
+* [older versions](https://github.com/d-lopes/dmsplus/releases)
 
 Getting Started
 ===============
