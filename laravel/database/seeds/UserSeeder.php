@@ -13,11 +13,17 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        if (User::where('email', '=', 'admin@test.org')->count() == 0) {
+        $adminEmail = env('ADMIN_EMAIL', 'admin@test.org');
+
+        if (User::where('email', '=', $adminEmail)->count() == 0) {
+    
+            $adminUser = env('ADMIN_USER', 'admin');
+            $adminPassword = env('ADMIN_PASSWORD', 'admin');
+
             factory(User::class)->create([
-                'name' => 'admin',
-                'email' => 'admin@test.org',
-                'password' => Hash::make('admin'),
+                'name' => $adminUser,
+                'email' => $adminEmail,
+                'password' => Hash::make($adminPassword),
             ]);
         }
         
