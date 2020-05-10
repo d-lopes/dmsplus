@@ -26,3 +26,4 @@ Route::post('/documents/search', 'DocumentController@search')->name('document.se
 Route::get('/documents/{id}', 'DocumentController@show')->name('document.show');
 Route::post('/documents/{id}/edit', 'DocumentController@edit')->name('document.edit');
 Route::post('/documents/{id}/upload', 'DocumentController@upload')->name('document.upload');
+Route::post('/documents/{id}/delete', 'DocumentController@delete')->name('document.delete');

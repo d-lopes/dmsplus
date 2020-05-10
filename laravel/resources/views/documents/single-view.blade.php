@@ -50,10 +50,27 @@
                     </div>
                 </div>
 
+                <div class="container">
+                    <form method="POST" action="/documents/{{ $document->id }}/delete">
+                        @csrf
+                        
+                        <div>
+                            <fieldset>
+                                <div class="input-group-append">  
+                                    <button class="btn btn-sm btn-outline-secondary" id="button-delete" type="submit">Delete</button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+
             </div>
             
             <div id="pdf" class="col-md-7">
                 <!-- placeholder for PDF Viewer that is inserted -->
+                <!-- 
+                    document located at path: {{$document->path}} 
+                -->
                 @if( empty($document->path))
                 <div class="text-center" style="padding: 25% 15%;">
                     <div class="alert alert-secondary" role="alert">

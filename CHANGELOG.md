@@ -6,8 +6,11 @@ This overview contains all changes done for the dms+ appliaction since its first
 
 ## unreleased changes
 
+### Features
+- added deletion functionality for documents - see [issue #10](https://github.com/d-lopes/dmsplus/issues/10)
+
 ### Bugfixes and improvements
-- source admin user credentials from env variables in order to fix [issue #4](https://github.com/d-lopes/dmsplus/issues/4)
+- read admin user credentials from env variables in order to fix [issue #4](https://github.com/d-lopes/dmsplus/issues/4)
 
 ## 02.05.2020 - 1.1.3
 

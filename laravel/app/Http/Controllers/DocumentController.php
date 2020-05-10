@@ -6,6 +6,8 @@ use App\Document;
 use App\Exceptions\InvalidRequestException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use RuntimeException;
 
 class DocumentController extends Controller
 {
@@ -72,6 +74,31 @@ class DocumentController extends Controller
             'document' => $document,
             'searchterm' => $request->st
         ]);
+    }
+
+    public function delete(Request $request, $id) {
+        $document = Document::find($id);
+        if ($document === null) {
+            throw new ModelNotFoundException("document with Id $id does not exist");
+        }
+
+        // delete file from storage, if it exists
+        $exists = Storage::disk('documents')->exists($document->path);
+        if ($exists) {
+            Storage::disk('documents')->delete($document->path);
+        }
+
+        // make sure the file is really gone
+        $exists = Storage::disk('documents')->exists($document->path);
+        if ($exists) {
+            throw new RuntimeException("file at $document->path could not be deleted");
+        }
+
+        // delete model from DB
+        $document->delete();
+
+        // return to homepage
+        return redirect('home');
     }
 
 }
