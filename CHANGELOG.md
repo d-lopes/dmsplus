@@ -1,5 +1,5 @@
-Change Log
-==========
+# Change Log
+=============
 
 This overview contains all changes done for the dms+ appliaction since its first release (April 2020).
  Changes are listed by release versions which follow [semantic versioning](https://semver.org).  
@@ -7,6 +7,7 @@ This overview contains all changes done for the dms+ appliaction since its first
 ## unreleased changes
 
 ### Features
+- added high-level statistics for documents - see [issue #7](https://github.com/d-lopes/dmsplus/issues/7)
 - added deletion functionality for documents - see [issue #10](https://github.com/d-lopes/dmsplus/issues/10)
 
 ### Bugfixes and improvements

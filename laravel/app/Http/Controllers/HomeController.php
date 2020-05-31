@@ -28,9 +28,24 @@ class HomeController extends Controller
 
         $reviews = Document::where('status', '<>', 'published')->latest()->limit(5)->get();
 
+        $array = Document::selectRaw('status, count(*) as count')->groupBy('status')->get();
+        $total = 0;
+        $stats = [];
+        foreach ($array as $item) {
+            $count = $item->count;
+            $kpi = (object) ['type' => $item->status];
+            $kpi->value = $count;
+            array_push($stats, $kpi);
+            $total += $count;
+        }
+        $kpi = (object) ['type' => 'total'];
+        $kpi->value = $total;
+        array_push($stats, $kpi);
+
         return view('home', [
             'latestDocuments' => $documents,
             'reviews' => $reviews,
+            'stats' => $stats,
             'searchterm' => ''
         ]);
     }
