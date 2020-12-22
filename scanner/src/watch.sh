@@ -8,9 +8,8 @@ LOGFILE="$BASE_DIR/logs/`date +%Y-%m-%d`_watch.log"
 export LC_ALL=C.UTF-8
 export LANG=C.UTF-8
 
-# skip empty folder
-# FIXME: only search for PDF files - other files are meaningless at the moment
-if [ -z "$(ls -A $BASE_DIR/inbox)" ]; then
+# skip folder without PDF files
+if [ -z "$(find $BASE_DIR/inbox -type f -name *.pdf)" ]; then
 	exit 0
 else
 	# indicate the job has started in the logs
