@@ -1,14 +1,15 @@
 #!/bin/bash
 
-# commen declarations
-LOGFILE="/var/run/logs/`date +%Y-%m-%d`_watch.log"
+# common declarations
 BASE_DIR=/var/run
+LOGFILE="$BASE_DIR/logs/`date +%Y-%m-%d`_watch.log"
 
 # set language to UTF-8 in order to avoid RuntimeError from ocrmypdf (will abort further execution otherwise)
 export LC_ALL=C.UTF-8
 export LANG=C.UTF-8
 
 # skip empty folder
+# FIXME: only search for PDF files - other files are meaningless at the moment
 if [ -z "$(ls -A $BASE_DIR/inbox)" ]; then
 	exit 0
 else
@@ -16,12 +17,23 @@ else
 	echo "`date +%Y-%m-%dT%H:%M:%S%:z` - INFO: Starting OCR scan process" >> $LOGFILE 2>&1
 fi
 
+# get curremt time in seconds
+CURRENT_TIME=$(date +%s)
+
 # start processing PDF FILEs
 for ORIG_FILE in $BASE_DIR/inbox/*.pdf; do #for all pdfs in the input folder
 	
 	# ensure that, if there are no matching files, the loop will exit without trying to process a non-existent file
-	# HINT: this can happen when there files in this folder with a different file extension
+	# HINT: this can happen when there are files in this folder with a different file extension
 	[ -f "$ORIG_FILE" ] || break 
+
+	# make sure we pick up only files, that have been last modified at least a minute ago (this will prevent us from using files that are in the middle of a copy/upload process)
+	LAST_MODIFIED=$(stat -c %Y $ORIG_FILE)
+	DIFF=$(($CURRENT_TIME-$LAST_MODIFIED))
+	if [ $DIFF < 60 ]; then
+		echo "INFO: $ORIG_FILE is skipped because its last modification is still in the grace period - retrying with the next scheduled run"
+		break
+	fi
 
 	# set file related variables
 	FILE_NAME=$(basename "$ORIG_FILE")
