@@ -4,13 +4,14 @@ services:
 
   # OCR utility
   scanner:
-      image: dl0pes/dmsocr:1.1.3
+      image: dl0pes/dmsocr:1.2.0
       container_name: scanner
       restart: unless-stopped
       tty: true
       environment:
         WEB_HOST: webserver
       volumes:
+        - webuploads:/var/run/uploads
         - ./directories/inbox:/var/run/inbox
         - ./directories/err:/var/run/err
         - ./directories/logs/scanner:/var/run/logs
@@ -21,7 +22,7 @@ services:
 
   # webapp
   app:
-      image: dl0pes/dmsweb:1.1.3
+      image: dl0pes/dmsweb:1.2.0
       container_name: app
       restart: unless-stopped
       tty: true
@@ -33,6 +34,7 @@ services:
         SERVICE_TAGS: dev
       volumes:
         - webdata:/var/www
+        - webuploads:/var/www/storage/app/uploads
         - ./directories/storage/files:/var/www/storage/app/documents
         - ./directories/storage/search:/var/www/storage/search
         - ./directories/logs/web:/var/www/storage/logs
@@ -48,7 +50,7 @@ services:
       restart: unless-stopped
       tty: true
       ports:
-        - "9000:80"
+        - "9001:80"
       volumes:
         - ./directories/storage/files:/var/www/public/files
         - ./nginx/:/etc/nginx/conf.d/
@@ -91,3 +93,4 @@ networks:
 #Volumes
 volumes:
   webdata:
+  webuploads:
