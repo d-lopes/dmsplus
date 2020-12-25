@@ -31,16 +31,9 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-
-                    </ul>
-  
-                    @guest
+                @guest
                     <div><!-- nothing to show --></div>
-                    @else
+                @else
                     <form class="navbar-nav ml-auto" method="POST" action="/documents/search">
                         @csrf
 
@@ -54,6 +47,18 @@
                                 </div>
                         </fieldset>
                     </form>
+                @endguest
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- Left Side Of Navbar -->
+                    <ul class="navbar-nav mr-auto">
+
+                    </ul>
+  
+                    @guest
+                    <div><!-- nothing to show --></div>
+                    @else
+                    <a class="btn btn-sm btn-outline-secondary" href="{{route('document.new')}}">Add Document</a>
                     @endguest
 
                     <!-- Right Side Of Navbar -->

@@ -4,8 +4,9 @@ skinparam state {
   BackgroundColor<<Pseudo>> White
 }
 
-state New: document was created in\n DMS Webapp
-state ToBeVerified <<Pseudo>>: document needs to be\nchecked for completeness\nin DMS Webapp
+state New: document was created
+state Pending: OCR scan for document \nis still pending
+state ToBeVerified <<Pseudo>>: document needs to be\nchecked for completeness
 state Incomplete: document lacks \nimportant data for\nusage in DMS Webapp
 state Published: document content can be\nfound with normal search\nin DMS Webapp
 
@@ -18,14 +19,18 @@ state EndSuccess <<end>>
 note left of Failed: <b>pseudo status</b>:\n\nthis statuscannot\nbe saved in DMS\nwebapp since the\ninitial creation via\nAPI already failed 
 Failed --> EndFailed
 
+New -right-> Pending: create document
+Pending --> ToBeVerified: run OCR scan for document
+
 [*] --> New: create document
-note right of New: document was\ncreated via API\n(with or w/out\nmeta data)
+note top of New: document was created \nvia API (with meta data)
+
 New --> ToBeVerified: upload document file
-note right of ToBeVerified: <b>pseudo status</b>:\n\nthis status does not need to be saved\nin DMS webapp because the automatic\ncompleteness check after document\nupload will immediately move on to the\nsubsequent status "Published" or\n"Incomplete"
+note left of ToBeVerified: <b>pseudo status</b>:\n\nthis status does not need to be saved\nin DMS webapp because the automatic\ncompleteness check after document\nupload will immediately move on to the\nsubsequent status "Published" or\n"Incomplete"
 ToBeVerified --> Published: run completeness check
 note right of Published: document has\npassed the\ncompleteness\ncheck
 ToBeVerified --> Incomplete: run completeness check
-note right of Incomplete: document has\nNOT passed the\ncompleteness\ncheck
+note right of Incomplete: document has\n<b>NOT</b> passed the\ncompleteness\ncheck
 Incomplete --> Published: supplement document data
 Published --> EndSuccess
 

@@ -23,7 +23,14 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::post('/documents/search', 'DocumentController@search')->name('document.search');
+
 Route::get('/documents/{id}', 'DocumentController@show')->name('document.show');
+
+# create document
+Route::get('/new-document', 'DocumentController@newDocument')->name('document.new');
+Route::post('/new-document', 'DocumentController@create')->name('document.create');
+
+# edit, complete or delete document
 Route::post('/documents/{id}/edit', 'DocumentController@edit')->name('document.edit');
-Route::post('/documents/{id}/upload', 'DocumentController@upload')->name('document.upload');
+Route::post('/documents/{id}/add-file', 'DocumentController@addFile')->name('document.addFile');
 Route::post('/documents/{id}/delete', 'DocumentController@delete')->name('document.delete');

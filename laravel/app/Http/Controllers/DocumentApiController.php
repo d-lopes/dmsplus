@@ -7,15 +7,31 @@ use App\Exceptions\InvalidRequestException;
 use App\Http\Requests\CreateDocumentRequest;
 use App\Http\Resources\DocumentCollection;
 use App\Http\Resources\DocumentResource;
+use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class DocumentApiController extends Controller
 {
 
     public function list(Request $request) {
-        return new DocumentCollection(Document::paginate());
+
+        $search_term = $request->input("search");
+        if (!isset($search_term)) {
+            return new DocumentCollection(Document::paginate());
+        }
+        
+        try {
+            list($field, $value) = explode('==', $search_term);
+            $documents = Document::where($field, "=", $value)->paginate();    
+        } catch(Exception $ex) {
+            Log::warning("Caught following exception when searching documents via API: ", [$ex->getMessage()]);
+            $documents = [];
+        }
+        
+        return new DocumentCollection($documents);
     }
      
     public function get(Request $request, $id) {
@@ -68,7 +84,8 @@ class DocumentApiController extends Controller
         }
 
         $document->update($request->all());
-    
+        $document->saveAndUpdateStatus();
+        
         return response()->json([
             'message' => 'document with Id successfully updated'
         ], 204);

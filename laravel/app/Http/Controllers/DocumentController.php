@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Document;
 use App\Exceptions\InvalidRequestException;
+use App\Http\Requests\CreateDocumentWithFileRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -12,6 +13,30 @@ use RuntimeException;
 class DocumentController extends Controller
 {
 
+    public function newDocument() {
+        return view('documents.create-new');
+    }
+
+    public function create(CreateDocumentWithFileRequest $request) {
+    
+        // make sure required data is given
+        $request->validated(); 
+
+        $uploadedFile = $request->file('file');
+        if ($uploadedFile === null) {
+            throw new InvalidRequestException("no file in field 'file' submitted");
+        }
+        $path = $uploadedFile->store("raw-files", ['disk' => 'uploads']);
+
+        $document = new Document($request->all());
+        $document->path = $path;
+        $document->status = "pending";
+        $document->save();
+
+        // return to homepage
+        return redirect('home');
+    }
+    
     public function search(Request $request) {
         
         $search_term = $request->input('st');
@@ -51,7 +76,7 @@ class DocumentController extends Controller
         ]);
     }
 
-    public function upload(Request $request, $id) {
+    public function addFile(Request $request, $id) {
         $uploadedFile = $request->file('file');
         if ($uploadedFile === null) {
             throw new InvalidRequestException("no file in field 'file' submitted");

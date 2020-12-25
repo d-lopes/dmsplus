@@ -55,7 +55,7 @@ RUN chmod 755 -R /var/www/storage && \
 
 
 # expose web folder so that it can be shared with nginx server
-VOLUME [ "/var/www", "/var/www/storage/app/documents", "/var/www/storage/search", "/var/www/storage/logs" ]
+VOLUME [ "/var/www", "/var/www/storage/app/documents", "/var/www/storage/app/uploads", "/var/www/storage/search", "/var/www/storage/logs" ]
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000

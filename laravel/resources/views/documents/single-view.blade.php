@@ -75,9 +75,9 @@
                 <div class="text-center" style="padding: 25% 15%;">
                     <div class="alert alert-secondary" role="alert">
                         <p><strong>PDF file not found.</strong> Want to upload one?</p>
-                        <form action="/documents/{{ $document->id }}/upload" method="POST" enctype="multipart/form-data">
+                        <form action="/documents/{{ $document->id }}/add-file" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <input type="file" name="file" />
+                            <input type="file" name="file" accept=".pdf" />
                             <button type="submit" class="btn btn-sm btn-outline-secondary">Upload</button>
                         </form>
                     </div>
@@ -109,7 +109,7 @@
             createImageThumbnails: false,
             addRemoveLinks: true,
             clickable: true,
-            url: "/documents/{{ $document->id }}/upload",
+            url: "/documents/{{ $document->id }}/add-file",
             headers: {
                 'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').content
             }

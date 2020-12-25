@@ -12,6 +12,7 @@ services:
       environment:
         WEB_HOST: webserver
       volumes:
+        - webuploads:/var/run/uploads
         - ./directories/inbox:/var/run/inbox
         - ./directories/err:/var/run/err
         - ./directories/logs/scanner:/var/run/logs
@@ -35,6 +36,7 @@ services:
         SERVICE_TAGS: dev
       volumes:
         - webdata:/var/www
+        - webuploads:/var/www/storage/app/uploads
         - ./directories/storage/files:/var/www/storage/app/documents
         - ./directories/storage/search:/var/www/storage/search
         - ./directories/logs/web:/var/www/storage/logs
@@ -93,3 +95,4 @@ networks:
 #Volumes
 volumes:
   webdata:
+  webuploads:
