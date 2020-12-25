@@ -14,7 +14,7 @@ Currently, the application has the following capabilities:
 Download
 ========
 
-* [Version 1.1.3](https://github.com/d-lopes/dmsplus/releases/tag/1.1.3)
+* [Version 1.2.0](https://github.com/d-lopes/dmsplus/releases/tag/1.2.0)
 * [older versions](https://github.com/d-lopes/dmsplus/releases)
 
 Getting Started
