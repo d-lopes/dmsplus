@@ -7,11 +7,20 @@ This overview contains all changes done for the dms+ appliaction since its first
 ## unreleased changes
 
 ### Features
+
+### Bugfixes and improvements
+
+## 25.12.2020 - 1.2.0
+
+### Features
 - added high-level statistics for documents - see [issue #7](https://github.com/d-lopes/dmsplus/issues/7)
 - added deletion functionality for documents - see [issue #10](https://github.com/d-lopes/dmsplus/issues/10)
+- added web upload functionality for documents - see [issue #11](https://github.com/d-lopes/dmsplus/issues/11)
 
 ### Bugfixes and improvements
 - read admin user credentials from env variables in order to fix [issue #4](https://github.com/d-lopes/dmsplus/issues/4)
+- upgrade to OCRMyPDF v11.4.0 [issue #12](https://github.com/d-lopes/dmsplus/issues/12)
+- fix upload of corrupt PDF files to DMS application [issue #22](https://github.com/d-lopes/dmsplus/issues/22)
 
 ## 02.05.2020 - 1.1.3
 
