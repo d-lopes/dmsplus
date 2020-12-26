@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Document;
+use App\Models\Document;
 use App\Exceptions\InvalidRequestException;
 use App\Http\Requests\CreateDocumentRequest;
 use App\Http\Resources\DocumentCollection;

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -20,17 +22,29 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::post('/documents/search', 'DocumentController@search')->name('document.search');
+# create new document via webapp
+Route::prefix('/new-documents')->group(
+    function () {
+        
+        Route::get('/', [DocumentController::class, 'newDocument'])->name('document.new');
+        Route::post('/', [DocumentController::class, 'create'])->name('document.create');
+        
+    }
+);
 
-Route::get('/documents/{id}', 'DocumentController@show')->name('document.show');
+# view and manage existing documents via webapp
+Route::prefix('/documents')->group(
+    function () {
 
-# create document
-Route::get('/new-document', 'DocumentController@newDocument')->name('document.new');
-Route::post('/new-document', 'DocumentController@create')->name('document.create');
+        Route::post('/search', [DocumentController::class, 'search'])->name('document.search');
+        Route::get('/{id}', [DocumentController::class, 'show'])->name('document.show');
+        # edit, complete or delete document
+        Route::post('/{id}/edit', [DocumentController::class, 'edit'])->name('document.edit');
+        Route::post('/{id}/add-file', [DocumentController::class, 'addFile'])->name('document.addFile');
+        Route::post('/{id}/delete', [DocumentController::class, 'delete'])->name('document.delete');
 
-# edit, complete or delete document
-Route::post('/documents/{id}/edit', 'DocumentController@edit')->name('document.edit');
-Route::post('/documents/{id}/add-file', 'DocumentController@addFile')->name('document.addFile');
-Route::post('/documents/{id}/delete', 'DocumentController@delete')->name('document.delete');
+    }
+);
+

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Document;
+use App\Models\Document;
 use App\Exceptions\InvalidRequestException;
 use App\Http\Requests\CreateDocumentWithFileRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

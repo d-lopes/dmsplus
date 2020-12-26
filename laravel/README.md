@@ -1,1 +1,1 @@
-Web Application based on Laravel v7.4.0 (https://github.com/laravel/laravel)
+Web Application based on Laravel v8.5.6 (https://github.com/laravel/laravel)

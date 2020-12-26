@@ -1,13 +1,14 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Scout\Searchable;
 
 class Document extends Model
 {
-    use Searchable;
+    use HasFactory, Searchable;
 
     protected $fillable = ['filename', 'content', 'path', 'status'];
 

@@ -1,8 +1,6 @@
 <?php
 
-use App\Document;
-use App\Http\Resources\DocumentCollection;
-use App\Http\Resources\DocumentResource;
+use App\Http\Controllers\DocumentApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,16 +23,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::prefix('documents')->group(
     function () {
     
-        Route::post('/', 'DocumentApiController@post');
+        Route::post('/', [DocumentApiController::class, 'post']);
 
-        Route::post('/{id}/binary', 'DocumentApiController@upload');
+        Route::post('/{id}/binary', [DocumentApiController::class, 'upload']);
         
-        Route::get('/{id}', 'DocumentApiController@get');
+        Route::get('/{id}', [DocumentApiController::class, 'get']);
         
-        Route::put('/{id}', 'DocumentApiController@put');
+        Route::put('/{id}', [DocumentApiController::class, 'put']);
         
-        Route::delete('/{id}', 'DocumentApiController@delete');
+        Route::delete('/{id}', [DocumentApiController::class, 'delete']);
 
-        Route::get('/', 'DocumentApiController@list');
+        Route::get('/', [DocumentApiController::class, 'list']);
     }
 );

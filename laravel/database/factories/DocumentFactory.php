@@ -1,15 +1,20 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use App\Document;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Document::class, function (Faker $faker) {
-    return [
-        
-        'filename' => $faker->file,
-        'content' => $faker->text,
-        'path' => $faker->url
-    ];
-});
+class DocumentFactory extends Factory {
+
+    protected $model = Document::class;
+
+    public function definition() {
+        return [
+                'filename' => $this->faker->file,
+                'content' => $this->faker->text,
+                'path' => $this->faker->url
+            ];
+    }
+
+}

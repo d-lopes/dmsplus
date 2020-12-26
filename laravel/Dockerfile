@@ -29,6 +29,9 @@ RUN docker-php-ext-install gd
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+RUN curl -sL https://deb.nodesource.com/setup_15.x | bash
+RUN apt-get install -y nodejs
+
 # Set working directory
 WORKDIR /var/www
 
@@ -39,8 +42,10 @@ COPY --chown=www-data:www-data docker-entrypoint.sh /var/run
 # tweak php configuration
 RUN mv config/php/local.ini /usr/local/etc/php/conf.d
 
-# install dependencies of laravel application
+# renew dependencies of laravel application
+RUN rm -rf /var/www/vendor && rm -rf /var/www/node_modules
 RUN composer install
+RUN npm install
 
 # setup file structure for webapp to work
 RUN mkdir -p /var/www/storage/logs && \
@@ -52,7 +57,6 @@ RUN mkdir -p /var/www/storage/logs && \
 #   and make the enrypoint script executable
 RUN chmod 755 -R /var/www/storage && \
     chmod 744 /var/run/docker-entrypoint.sh
-
 
 # expose web folder so that it can be shared with nginx server
 VOLUME [ "/var/www", "/var/www/storage/app/documents", "/var/www/storage/app/uploads", "/var/www/storage/search", "/var/www/storage/logs" ]
