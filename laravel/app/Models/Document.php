@@ -12,12 +12,16 @@ class Document extends Model
 
     protected $fillable = ['filename', 'content', 'path', 'status'];
 
+    public static function allStates() {
+        return [DocumentStatus::CREATED, DocumentStatus::PENDING, DocumentStatus::INCOMPLETE, DocumentStatus::PUBLISHED];
+    }
+
     public function markAsPublished() {
-        $this->status = 'published';
+        $this->status = DocumentStatus::PUBLISHED;
     }
 
     public function markAsIncomplete() {
-        $this->status = 'incomplete';
+        $this->status = DocumentStatus::INCOMPLETE;
     }
 
     public function saveAndUpdateStatus(array $options = []) {

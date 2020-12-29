@@ -45,7 +45,7 @@ RUN mv config/php/local.ini /usr/local/etc/php/conf.d
 # renew dependencies of laravel application
 RUN rm -rf /var/www/vendor && rm -rf /var/www/node_modules
 RUN composer install
-RUN npm install
+RUN npm install && npm run prod
 
 # setup file structure for webapp to work
 RUN mkdir -p /var/www/storage/logs && \

@@ -20,8 +20,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
-
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 # create new document via webapp
@@ -48,3 +46,7 @@ Route::prefix('/documents')->group(
     }
 );
 
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
