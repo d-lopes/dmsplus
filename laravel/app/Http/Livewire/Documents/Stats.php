@@ -8,6 +8,8 @@ use Livewire\Component;
 class Stats extends Component
 {
 
+    protected $listeners = [DocumentEvents::CREATED => "render"];
+
     public function getStats() {
         $states = Document::allStates();
 
