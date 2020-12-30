@@ -14,7 +14,7 @@
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.0/dist/alpine.min.js" defer></script>
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
-        @livewireStyles
+        @laravelViewsStyles
 
         <!-- Scripts -->
         <script src="{{ mix('js/app.js') }}" defer></script>
@@ -38,6 +38,6 @@
 
         @stack('modals')
 
-        @livewireScripts
+        @laravelViewsScripts
     </body>
 </html>

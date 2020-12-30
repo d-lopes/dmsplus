@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Documents;
 
 use App\Models\Document;
+use App\Models\DocumentStatus;
 use Livewire\Component;
 
 class Stats extends Component
@@ -11,7 +12,7 @@ class Stats extends Component
     protected $listeners = [DocumentEvents::CREATED => "render"];
 
     public function getStats() {
-        $states = Document::allStates();
+        $states = DocumentStatus::all();
 
         $array = Document::selectRaw('status, count(*) as count')->groupBy('status')->get();
         $total = 0;

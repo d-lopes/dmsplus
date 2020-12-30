@@ -10,7 +10,10 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg flex flex-col md:flex-row">
                 
                     <div class="container w-3/4 px-4 py-4">
-                        <h3>{{ __('These documents need your attention:') }}<h3>
+                        <h3>{{ __('These documents need your attention:') }}</h3>
+                        <div>
+                            <livewire:documents.attention-overview-table />
+                        </div>
                     </div>
                     <div class="container w-1/4 px-4 py-4 float-right bg-gray-600 text-white">
                         <livewire:documents.stats />

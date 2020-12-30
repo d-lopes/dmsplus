@@ -11,10 +11,7 @@ class Document extends Model
     use HasFactory, Searchable;
 
     protected $fillable = ['filename', 'content', 'path', 'status'];
-
-    public static function allStates() {
-        return [DocumentStatus::CREATED, DocumentStatus::PENDING, DocumentStatus::INCOMPLETE, DocumentStatus::PUBLISHED];
-    }
+    protected $dates = ['created_at', 'updated_at'];
 
     public function markAsPublished() {
         $this->status = DocumentStatus::PUBLISHED;
