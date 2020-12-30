@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Documents;
 
+use App\Events\DocumentEvents;
 use App\Http\Livewire\Documents\Actions\DeleteAction;
 use App\Http\Livewire\Documents\Filters\CreatedAfterFilter;
 use App\Http\Livewire\Documents\Filters\CreatedBeforeFilter;
@@ -17,6 +18,8 @@ use LaravelViews\Facades\UI;
 use LaravelViews\Views\TableView;
 
 class SearchResultTable extends TableView {
+
+    protected $listeners = [DocumentEvents::CREATED => "render"];
 
     public $searchBy = ['filename', 'content'];
 

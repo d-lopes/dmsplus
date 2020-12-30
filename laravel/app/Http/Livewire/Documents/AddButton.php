@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Documents;
 
+use App\Events\DocumentEvents;
 use App\Models\Document;
 use Livewire\Component;
 use Livewire\WithFileUploads;
