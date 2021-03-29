@@ -1,8 +1,4 @@
 .DS_Store
 GITHUB_TOKEN
-scanner/testdata/.DS_Store
-laravel/composer.lock
 laravel/Archive.zip
 laravel/docker-compose.yml.tmpl
-laravel/package-lock.json
-scanner/testdata/.DS_Store
