@@ -4,11 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Document;
 use App\Exceptions\InvalidRequestException;
-use App\Http\Requests\CreateDocumentWithFileRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use RuntimeException;
 
 class DocumentController extends Controller
 {
@@ -23,9 +20,8 @@ class DocumentController extends Controller
             throw new ModelNotFoundException("document with Id $id does not exist");
         }
 
-        return view('documents.single-view', [
-            'document' => $document,
-            'searchterm' => $request->st
+        return view('documents.show', [
+            'document' => $document
         ]);
     }
 

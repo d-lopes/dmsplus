@@ -1,0 +1,7 @@
+- notification does not disapear automatically after: 
+        - add new document
+        - delete document
+        - edit document
+    => develop notification component
+
+- display error after edit document -> remove metadata of published file leads to disapearance of pdf in file-viewer (!)

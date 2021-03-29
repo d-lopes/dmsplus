@@ -22,7 +22,7 @@
    <body class="font-sans antialiased">
         <div class="bg-white">
             <a href="{{ route('dashboard') }}" class="flex justify-center min-h-screen">
-                <x-jet-application-mark class="h-48 w-auto m-auto" />
+                <x-jet-application-logo class="h-48 w-auto m-auto" />
             </a>
         </div>
 

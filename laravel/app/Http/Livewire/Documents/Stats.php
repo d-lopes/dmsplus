@@ -15,8 +15,11 @@ class Stats extends Component
     public function getStats() {
         $states = DocumentStatus::all();
 
-        $array = Document::selectRaw('status, count(*) as count')->groupBy('status')->get();
-        $total = 0;
+        $array = Document::selectRaw('status, count(*) as count')
+                    ->groupBy('status')
+                    ->orderBy('count', 'desc')
+                    ->orderBy('status', 'asc')
+                    ->get();
         $stats = [];
         foreach ($array as $item) {
             $count = $item->count;
@@ -27,9 +30,6 @@ class Stats extends Component
             # remove state from all states array
             $pos = array_search($item->status, $states);
             unset($states[$pos]);
-            
-            # count overall number of documents
-            $total += $count;
         }
 
         # add missing states
@@ -38,11 +38,7 @@ class Stats extends Component
             $kpi->value = 0;
             array_push($stats, $kpi);
         }
-
-        $kpi = (object) ['type' => 'total'];
-        $kpi->value = $total;
-        array_push($stats, $kpi);
-
+        
         return $stats;
     }
 
@@ -50,6 +46,15 @@ class Stats extends Component
     {
         $stats = $this->getStats();
 
-        return view('livewire.documents.stats', [ 'stats' => $stats ]);
+        # count overall number of documents
+        $total = 0;
+        foreach ($stats as $item) {
+            $total += $item->value;
+        }
+
+        return view('livewire.documents.stats', [ 
+                        'stats' => $stats, 
+                        'total' => $total 
+                    ]);
     }
 }

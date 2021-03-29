@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Documents;
 
 use App\Events\DocumentEvents;
+use App\Http\Livewire\Common\RedirectAction;
 use App\Http\Livewire\Documents\Actions\DeleteAction;
 use App\Http\Livewire\Documents\Filters\CreatedAfterFilter;
 use App\Http\Livewire\Documents\Filters\CreatedBeforeFilter;
@@ -10,9 +11,7 @@ use App\Http\Livewire\Documents\Filters\StatusFilter;
 use App\Http\Livewire\Documents\Filters\UpdatedAfterFilter;
 use App\Http\Livewire\Documents\Filters\UpdatedBeforeFilter;
 use App\Models\Document;
-use App\Models\DocumentStatus;
 use Illuminate\Database\Eloquent\Builder;
-use LaravelViews\Actions\RedirectAction;
 use LaravelViews\Facades\Header;
 use LaravelViews\Facades\UI;
 use LaravelViews\Views\TableView;
@@ -32,7 +31,7 @@ class SearchResultTable extends TableView {
      */
     public function repository(): Builder
     {
-        return Document::query();
+        return Document::query()->orderBy('updated_at', 'desc');
     }
 
     /**
@@ -53,7 +52,7 @@ class SearchResultTable extends TableView {
 
     protected function actionsByRow() {
         return [
-            new RedirectAction('documents.edit', 'Edit', 'edit'),
+            new RedirectAction('document.show', ['mode' => 'edit'], 'Edit', 'edit'),
             new DeleteAction,
         ];
     }
@@ -73,29 +72,6 @@ class SearchResultTable extends TableView {
         ];
     }
 
-    private static function getStatusBadge($status): string {
-        $type = '';
-        switch ($status) {
-            case DocumentStatus::CREATED:
-                $type = 'info';
-                break;
-            case DocumentStatus::PENDING:
-                $type = 'warning';
-                break;
-            case DocumentStatus::INCOMPLETE:
-                $type = 'danger';
-                break;
-            case DocumentStatus::PUBLISHED:
-                $type = 'success';
-                break;
-            default:
-                $type = 'default';
-                break;
-        }
-
-        return UI::badge(DocumentStatus::asLabel($status), $type);
-    }
-
     /**
      * Sets the data to every cell of a single row
      *
@@ -106,7 +82,7 @@ class SearchResultTable extends TableView {
         return [
             UI::icon('file-text', 'default', 'text-gray-600 h-4 w-4'),
             UI::link($model->filename, route('document.show', ['id' => $model->id])),
-            SearchResultTable::getStatusBadge($model->status), 
+            DocumentHelper::getStatusBadge($model->status), 
             $model->created_at, 
             $model->updated_at
         ];

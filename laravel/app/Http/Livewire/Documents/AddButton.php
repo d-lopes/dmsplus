@@ -3,12 +3,12 @@
 namespace App\Http\Livewire\Documents;
 
 use App\Events\DocumentEvents;
+use App\Http\Livewire\Common\ComponentBase;
 use App\Models\Document;
-use Livewire\Component;
+use App\Models\DocumentStatus;
 use Livewire\WithFileUploads;
 
-class AddButton extends Component
-{
+class AddButton extends ComponentBase {
 
     use WithFileUploads;
 
@@ -47,12 +47,15 @@ class AddButton extends Component
         $document = new Document();
         $document->filename = $this->filename;
         $document->path = $this->fileinput->store("raw-files", ['disk' => 'uploads']);
-        $document->status = "pending";
+        $document->status = DocumentStatus::PENDING;
         $document->save();
 
+        $this->success( __('Document ' . $this->filename . ' was successfully saved.') );
         $this->emit(DocumentEvents::CREATED);
 
         $this->closeDialog();
+
+        redirect()->route('document.list');
     }
 
     public function render() {

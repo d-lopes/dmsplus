@@ -21,7 +21,8 @@ class AttentionOverviewTable extends SearchResultTable {
         
         return Document::query()
                     ->where('status', '<>', DocumentStatus::PUBLISHED) 
-                    ->whereDate('created_at', '<=', $threeMinutesAgo);
+                    ->whereDate('created_at', '<=', $threeMinutesAgo)
+                    ->orderBy('updated_at', 'desc');
     }
 
     // hide filters (as we do not want them to show in the 'documents that need your attention overview')

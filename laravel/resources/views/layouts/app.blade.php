@@ -11,13 +11,15 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
         <!-- Styles -->
-        <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.0/dist/alpine.min.js" defer></script>
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
-        @laravelViewsStyles
-
         <!-- Scripts -->
+        <script src="https://cdn.jsdelivr.net/npm/pdfobject@2.2.4/pdfobject.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.0/dist/alpine.min.js" defer></script>
         <script src="{{ mix('js/app.js') }}" defer></script>
+
+        <!-- blade directive to import laravel view related styles -->
+        @laravelViewsStyles        
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
@@ -25,7 +27,7 @@
 
             <!-- Page Heading -->
             <header class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <div class="max-w-7xl mx-auto py-3 px-4 sm:px-6 lg:px-8">
                     {{ $header }}
                 </div>
             </header>
@@ -38,6 +40,7 @@
 
         @stack('modals')
 
+        <!-- blade directive to import laravel view related scripts -->
         @laravelViewsScripts
     </body>
 </html>

@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="text-xl font-bold leading-7 text-gray-900 sm:text-xl sm:truncate">
             {{ __('Overview') }}
         </h2>
     </x-slot>
@@ -15,7 +15,7 @@
                             <livewire:documents.attention-overview-table />
                         </div>
                     </div>
-                    <div class="container w-1/4 px-4 py-4 float-right bg-gray-600 text-white">
+                    <div class="container w-1/4 px-4 py-4 float-right text-gray-600 bg-gray-200">
                         <livewire:documents.stats />
                     </div>
                 

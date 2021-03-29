@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Documents\Actions;
 
-use Illuminate\Support\Facades\Storage;
+use App\Http\Livewire\Documents\DocumentHelper;
 use LaravelViews\Actions\Action;
 use LaravelViews\Actions\Confirmable;
 use RuntimeException;
@@ -32,26 +32,12 @@ class DeleteAction extends Action {
      * @param $model Model object of the list where the user has clicked
      */
     public function handle($model) {
-
-        $document = $model;
-        $filename = $document->filename;
-
-        // delete file from storage, if it exists
-        $exists = Storage::disk('documents')->exists($document->path);
-        if ($exists) {
-            Storage::disk('documents')->delete($document->path);
-        }
-
-        // make sure the file is really gone
-        $exists = Storage::disk('documents')->exists($document->path);
-        if ($exists) {
-            throw new RuntimeException("");
-            $this->error( __('File at ' . $document->path . ' could not be deleted!') );
-        } else {
-            // delete model from DB
-            $document->delete();
+        try {
+            $filename = $model->filename;
+            DocumentHelper::handleDeleteAction($model);
             $this->success( __('Document ' . $filename . ' was successfully deleted') );
+        } catch (RuntimeException $e) {
+            $this->error( __('File could not be deleted! Reason: ') . $e->getMessage());
         }
-
     }
 }

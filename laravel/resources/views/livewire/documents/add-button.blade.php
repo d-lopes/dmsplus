@@ -1,15 +1,13 @@
 <div>
     <!-- the button -->
-    <div class="px-4">
-        <button type="button" wire:click="showDialog" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-            <!-- Heroicon name: document-add (small) -->
-            <svg class="-ml-1 mr-2 h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V8z" clip-rule="evenodd" />
-            </svg>
-            {{ __('Add Document') }}
-        </button>
-    </div>
-
+    <button type="button" wire:click="showDialog" class="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+        <span class="sr-only">{{ __('Add Document') }}</span>
+        <!-- Heroicon name: document-add (small) -->
+        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+    </button>
+    
     <!-- the dialog -->
     <x-jet-dialog-modal id="createDocumentDialog" wire:model="dialog" maxWidth="2xl">
         <x-slot name="title"> 
@@ -20,7 +18,7 @@
                 </svg>
             </div>
             <h3 class="px-12 py-2 text-lg leading-6 font-medium text-gray-900" id="modal-headline">
-                {{ __('Add Document') }}
+                {{ __('Add New Document') }}
             </h3>
         </x-slot>
         <x-slot name="content">
@@ -83,4 +81,5 @@
         </x-slot>
         <x-slot name="footer"></x-slot>
     </x-jet-dialog-modal>
+    
 </div>
