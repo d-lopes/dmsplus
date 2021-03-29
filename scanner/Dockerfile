@@ -1,4 +1,4 @@
-FROM jbarlow83/ocrmypdf:v11.4.0
+FROM jbarlow83/ocrmypdf:v11.7.3
 
 LABEL maintainer="tech@dlopes.de"
 
