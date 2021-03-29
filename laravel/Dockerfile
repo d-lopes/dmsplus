@@ -50,8 +50,7 @@ RUN npm install && npm run prod
 # setup file structure for webapp to work
 RUN mkdir -p /var/www/storage/logs && \
     mkdir -p /var/www/storage/search && \
-    mkdir -p /var/www/storage/app/documents && \
-    cd public && ln -s /var/www/storage/app/documents files
+    mkdir -p /var/www/storage/app/documents
 
 # set application's storage directory to R/W permissions
 #   and make the enrypoint script executable

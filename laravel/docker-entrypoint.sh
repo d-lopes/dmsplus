@@ -8,6 +8,10 @@ if ! [[ -f "$INIT_INDICATOR_FILE" ]]; then
   chown www-data:www-data -R /var/www/storage
   chmod 777 /var/www/storage/app/documents /var/www/storage/search /var/www/storage/logs
 
+  if ! [[ -f "/var/www/public/files" ]]; then 
+    ln -s /var/www/storage/app/documents /var/www/public/files
+  fi
+
   php artisan key:generate
   echo "true" >> $INIT_INDICATOR_FILE
 fi
