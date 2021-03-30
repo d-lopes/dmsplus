@@ -13,7 +13,7 @@ class Document extends Model
     use HasTags, HasFactory, Searchable;
 
     protected $fillable = ['filename', 'content', 'path', 'status'];
-    protected $appends = ['simpleTags'];
+    protected $appends = ['file_size', 'file_type', 'simpleTags'];
     protected $dates = ['created_at', 'updated_at'];
 
     /**
