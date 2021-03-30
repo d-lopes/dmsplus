@@ -43,9 +43,9 @@ class Document extends Model
         $size = Storage::disk('documents')->size($this->path);
 
         if ($size > 1000000) {
-            $result = round(($size / 1000000), 1) . " MB";
+            $result = round(($size / 1024 / 1024), 1) . " MB";
         } else if ($size > 1000) {
-            $result = round($size / 1000) . " KB";
+            $result = round($size / 1024) . " KB";
         } else {
             $result = $size . " B";
         }
