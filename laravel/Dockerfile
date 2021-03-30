@@ -42,8 +42,7 @@ COPY --chown=www-data:www-data docker-entrypoint.sh /var/run
 # tweak php configuration
 RUN mv config/php/local.ini /usr/local/etc/php/conf.d
 
-# renew dependencies of laravel application
-RUN rm -rf /var/www/vendor && rm -rf /var/www/node_modules
+# install dependencies of laravel application
 RUN composer install
 RUN npm install && npm run prod
 
