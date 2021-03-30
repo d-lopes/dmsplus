@@ -21,6 +21,7 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.0",
         "livewire/livewire": "^2.0",
+        "spatie/laravel-tags": "^2.7",
         "teamtnt/laravel-scout-tntsearch-driver": "^10.0"
     },
     "require-dev": {

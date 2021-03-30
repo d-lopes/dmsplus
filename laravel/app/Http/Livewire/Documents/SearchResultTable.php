@@ -20,7 +20,7 @@ class SearchResultTable extends TableView {
 
     protected $listeners = [DocumentEvents::CREATED => "render"];
 
-    public $searchBy = ['filename', 'content'];
+    public $searchBy = ['filename', 'content', 'tags.name'];
 
     protected $paginate = 15;
 

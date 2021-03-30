@@ -1,6 +1,6 @@
 <div>
 
-    <!-- alerts -->
+     {{-- alerts --}}
     @if (session()->has('message'))
         @php
             $type = session('messageType');              
@@ -29,50 +29,53 @@
         </div>
     @endif
 
-    <!-- confirmation -->
-   @if (session()->has('confirmationMessage'))
-    <div class="fixed bottom-0 inset-x-0 px-4 pb-4 sm:inset-0 sm:flex sm:items-center sm:justify-center">
-        <div class="fixed inset-0 transition-opacity">
-            <div class="absolute inset-0 bg-gray-900 opacity-75"></div>
-        </div>
-        <div class="bg-white rounded-lg px-4 pt-5 pb-4 overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full sm:p-6" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
-            <div class="sm:flex sm:items-start">
-            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                <i data-feather="alert-triangle" class="text-red-600"></i>
+    {{-- confirmation --}}
+    @if (session()->has('confirmationMessage'))
+        <div class="fixed bottom-0 inset-x-0 px-4 pb-4 sm:inset-0 sm:flex sm:items-center sm:justify-center">
+            <div class="fixed inset-0 transition-opacity">
+                <div class="absolute inset-0 bg-gray-900 opacity-75"></div>
             </div>
-            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                <div class="mt-2">
-                {{ session('confirmationMessage') }}
+            <div class="bg-white rounded-lg px-4 pt-5 pb-4 overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full sm:p-6" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+                <div class="sm:flex sm:items-start">
+                <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                    <i data-feather="alert-triangle" class="text-red-600"></i>
                 </div>
-                <span wire:loading class="mr-4">
-                Executing action
+                <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                    <div class="mt-2">
+                    {{ session('confirmationMessage') }}
+                    </div>
+                    <span wire:loading class="mr-4">
+                    Executing action
+                    </span>
+                </div>
+                </div>
+                <div wire:loading.remove class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                <span class="flex w-full sm sm:ml-3 sm:w-auto">
+                    @component('laravel-views::components.button', [
+                    'variant' => 'danger',
+                    'title' => "Yes, I'm sure",
+                    'onWireClick' => "delete",
+                    'block' => true
+                    ])
+                    @endcomponent
                 </span>
-            </div>
-            </div>
-            <div wire:loading.remove class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-            <span class="flex w-full sm sm:ml-3 sm:w-auto">
-                @component('laravel-views::components.button', [
-                'variant' => 'danger',
-                'title' => "Yes, I'm sure",
-                'onWireClick' => "delete",
-                'block' => true
-                ])
-                @endcomponent
-            </span>
-            <span class="mt-3 flex w-full sm:mt-0 sm:w-auto">
-                @component('laravel-views::components.button', [
-                'variant' => 'light',
-                'title' => 'Cancel',
-                'onWireClick' => 'cancelDelete',
-                ])
-                @endcomponent
-            </span>
+                <span class="mt-3 flex w-full sm:mt-0 sm:w-auto">
+                    @component('laravel-views::components.button', [
+                    'variant' => 'light',
+                    'title' => 'Cancel',
+                    'onWireClick' => 'cancelDelete',
+                    ])
+                    @endcomponent
+                </span>
+                </div>
             </div>
         </div>
-    </div>
     @endif
 
+    <!-- Editor -->
     <div x-data="{ editMode: {{ $isEditMode }}, tab: '{{ $tab }}', isPending: {{ $isPending }} }">
+
+        <!-- Header -->
         <div class="lg:flex lg:items-center lg:justify-between py-3">
 
             <!-- Header -->
@@ -87,31 +90,37 @@
                 <div class="mt-1 flex flex-col sm:flex-row sm:flex-wrap sm:mt-0 sm:space-x-6 text-gray-600">
                     <div class="mt-2 flex items-center text-sm">
                         <!-- feather icon name: info -->
-                        <svg class="flex-shrink-0 mr-1.5 h-4 w-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-info">
+                        <svg class="flex-shrink-0 mr-1.5 h-4 w-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-info">
                             <circle cx="12" cy="12" r="10"></circle>
                             <line x1="12" y1="16" x2="12" y2="12"></line>
                             <line x1="12" y1="8" x2="12.01" y2="8"></line>
                         </svg>
                         {{ __('Status') }}: <?php echo $badgeHtml ?>
                     </div>
-                    {{-- <div class="mt-2 flex items-center text-sm">
-                        <!-- Heroicon name: currency-dollar -->
-                        <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd" />
+                    <div class="mt-2 flex items-center text-sm">
+                        <!-- Heroicon name: paper clip -->
+                        <svg class="flex-shrink-0 mr-1.5 h-4 w-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
                         </svg>
-                        {{ __('File size') }}: 128k
-                    </div> --}}
+                        {{ __('File type') }}: {{ $document->file_type }}
+                    </div>
+                    <div class="mt-2 flex items-center text-sm">
+                        <!-- Heroicon name: hash -->
+                        <svg class="flex-shrink-0 mr-1.5 h-4 w-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
+                        </svg>
+                        {{ __('File size') }}: {{ $document->file_size }}
+                    </div>
                     <div class="mt-2 flex items-center text-sm">
                         <!-- Heroicon name: calendar -->
-                        <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="flex-shrink-0 mr-1.5 h-4 w-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                         {{ __('Created') }}: {{ $document->created_at }}
                     </div>
                     <div class="mt-2 flex items-center text-sm">
                         <!-- Heroicon name: calendar -->
-                        <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="flex-shrink-0 mr-1.5 h-4 w-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                         {{ __('Updated') }}: {{ $document->updated_at }}
@@ -285,6 +294,20 @@
 
         <!-- Meta Data -->
         <div x-show="tab === 'meta'" class="bg-white shadow-xl sm:rounded-lg md:flex-row p-4">
+            <div>
+              <label for="tags" class="block font-medium text-sm text-gray-700 block text-sm font-bold text-gray-700">
+                {{ __('Tags') }}
+              </label>
+              <div class="mt-1" x-show="editMode">
+                <input type="text" wire:model.defer="editorTags" x-bind:disabled="!editMode" class="border form-input rounded-md shadow-sm placeholder-gray-400 form-input mt-1 block w-full focus:border-gray-500 focus:bg-white focus:ring-0" />
+              </div>
+              <div class="mt-1" x-show="!editMode">
+                <?php echo $tagsHtml ?>
+              </div>
+              <p class="mt-2 text-sm text-gray-500">
+                {{ __('A list of associated tags with this document.') }}
+              </p>
+            </div>
             <div>
               <label for="content" class="block font-medium text-sm text-gray-700 block text-sm font-bold text-gray-700">
                 {{ __('Content') }}

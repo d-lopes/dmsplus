@@ -15,12 +15,17 @@ class Editor extends ComponentBase {
 
     use WithFileUploads;
     
+    public $rules = [ 'editorTags' => 'nullable' ];
+
     public $document;
     public $mode = 'show';
 
     // form data
     public $filename;
     public $content;
+    
+    public $editorTags;
+
     public $editorFileinput;
     public $editorFileInputName;
 
@@ -30,7 +35,7 @@ class Editor extends ComponentBase {
     {
         $this->filename = $document->filename;
         $this->content = $document->content;
-
+        $this->editorTags = $document->simpleTags;        
         $this->mode = $request->mode;
     }
 
@@ -83,6 +88,8 @@ class Editor extends ComponentBase {
     public function save() {
         $this->document->filename = $this->filename;
         $this->document->content = $this->content;
+        $tags = explode(",", $this->editorTags);
+        $this->document->syncTags($tags);
         $this->document->saveAndUpdateStatus();
 
         $this->success( __('Canges to document ' . $this->filename . ' were successfully saved.') );
@@ -105,6 +112,7 @@ class Editor extends ComponentBase {
         return view('livewire.documents.editor',
            [
                 'badgeHtml' => DocumentHelper::getStatusBadge($this->document->status),
+                'tagsHtml' => DocumentHelper::getTagsAsBadges($this->document->simpleTags),
                 'isPending' => $isPending,
                 'isEditMode' => $isEditMode,
                 'tab' => $tab

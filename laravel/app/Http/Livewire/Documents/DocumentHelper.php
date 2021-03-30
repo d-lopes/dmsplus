@@ -32,6 +32,15 @@ abstract class DocumentHelper {
         return UI::badge(DocumentStatus::asLabel($status), $type);
     }
 
+    public static function getTagsAsBadges($tagsArray): string {
+        $tagsStr = '';
+        foreach ($tagsArray as $tag) {
+            $tagsStr  .= ' ' . UI::badge($tag);
+        }
+
+        return $tagsStr;
+    }
+
     public static function handleDeleteAction($document) {
         // delete file from storage, if it exists
         $exists = Storage::disk('documents')->exists($document->path);
