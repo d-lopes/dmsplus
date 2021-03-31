@@ -88,10 +88,11 @@ class Editor extends ComponentBase {
     public function save() {
         $this->document->filename = $this->filename;
         $this->document->content = $this->content;
+        DocumentHelper::refreshDocumentDates($this->document);
         $tags = is_array($this->editorTags) ? $this->editorTags : explode(",", $this->editorTags);
         $this->document->syncTags($tags);
         $this->document->saveAndUpdateStatus();
-
+        
         $this->success( __('Canges to document ' . $this->filename . ' were successfully saved.') );
     }
 
@@ -109,10 +110,12 @@ class Editor extends ComponentBase {
         // goto metadata tab automatically when we are in edit mode
         $tab = $isEditMode ? 'meta' : 'file-viewer';
         
+        // make sure we are always seeing the most recent version of the document
+        $this->document->refresh();
+
         return view('livewire.documents.editor',
            [
                 'badgeHtml' => DocumentHelper::getStatusBadge($this->document->status),
-                'tagsHtml' => DocumentHelper::getTagsAsBadges($this->document->simpleTags),
                 'isPending' => $isPending,
                 'isEditMode' => $isEditMode,
                 'tab' => $tab

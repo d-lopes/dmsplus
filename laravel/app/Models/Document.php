@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Http\Livewire\Documents\DocumentHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Scout\Searchable;
 use Spatie\Tags\HasTags;
@@ -15,6 +17,14 @@ class Document extends Model
     protected $fillable = ['filename', 'content', 'path', 'status'];
     protected $appends = ['file_size', 'file_type', 'simpleTags'];
     protected $dates = ['created_at', 'updated_at'];
+
+    /**
+     * Get the dates (mentioned in its contents) of the document
+     */
+    public function dates()
+    {
+        return $this->hasMany(DocumentDate::class);
+    }
 
     /**
      * simplified tags accessor - see https://laravel.com/docs/8.x/eloquent-mutators#defining-an-accessor
@@ -35,8 +45,7 @@ class Document extends Model
      * 
      * FIXME: move this out of the eloquent model 
      */
-    public function getFileSizeAttribute()
-    {
+    public function getFileSizeAttribute() {
         if (!Storage::disk('documents')->exists($this->path)) {
             return "unknown";
         }
@@ -58,8 +67,7 @@ class Document extends Model
      * 
      * FIXME: make this more dynamic and move this out of the eloquent model 
      */
-    public function getFileTypeAttribute()
-    {
+    public function getFileTypeAttribute() {
         return "PDF";
     }
 

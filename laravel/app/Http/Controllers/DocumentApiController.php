@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Document;
 use App\Exceptions\InvalidRequestException;
+use App\Http\Livewire\Documents\DocumentHelper;
 use App\Http\Requests\CreateDocumentRequest;
 use App\Http\Resources\DocumentCollection;
 use App\Http\Resources\DocumentResource;
@@ -42,13 +43,14 @@ class DocumentApiController extends Controller
 
         return new DocumentResource($document);
     }
-    
+
     public function post(CreateDocumentRequest $request) {
         
         // make sure required data is given
         $request->validated(); 
         
         $document = new Document($request->all());
+        DocumentHelper::refreshDocumentDates($document);
         $document->save();
 
         return response()->json($document, 201);
@@ -84,6 +86,7 @@ class DocumentApiController extends Controller
         }
 
         $document->update($request->all());
+        DocumentHelper::refreshDocumentDates($document);
         $document->saveAndUpdateStatus();
         
         return response()->json([
@@ -97,7 +100,7 @@ class DocumentApiController extends Controller
             throw new ModelNotFoundException("resource with Id $id does not exist");
         }
 
-        $document->delete();
+        DocumentHelper::handleDeleteAction($document);
     
         return response()->json([
             'message' => 'document with Id successfully deleted'

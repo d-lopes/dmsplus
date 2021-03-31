@@ -7,6 +7,8 @@ use App\Http\Livewire\Common\RedirectAction;
 use App\Http\Livewire\Documents\Actions\DeleteAction;
 use App\Http\Livewire\Documents\Filters\CreatedAfterFilter;
 use App\Http\Livewire\Documents\Filters\CreatedBeforeFilter;
+use App\Http\Livewire\Documents\Filters\DocumentDateAfterFilter;
+use App\Http\Livewire\Documents\Filters\DocumentDateBeforeFilter;
 use App\Http\Livewire\Documents\Filters\StatusFilter;
 use App\Http\Livewire\Documents\Filters\UpdatedAfterFilter;
 use App\Http\Livewire\Documents\Filters\UpdatedBeforeFilter;
@@ -42,6 +44,8 @@ class SearchResultTable extends TableView {
     protected function filters() {
         return [
             new StatusFilter,
+            new DocumentDateAfterFilter,
+            new DocumentDateBeforeFilter,
             new CreatedAfterFilter,
             new CreatedBeforeFilter,
             new UpdatedAfterFilter,

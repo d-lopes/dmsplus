@@ -293,34 +293,68 @@
         </div>
 
         <!-- Meta Data -->
-        <div x-show="tab === 'meta'" class="bg-white shadow-xl sm:rounded-lg md:flex-row p-4">
+        <div x-show="tab === 'meta'" class="bg-white shadow-xl sm:rounded-lg md:flex-row p-4 space-y-5">
             <div>
               <label for="tags" class="block font-medium text-sm text-gray-700 block text-sm font-bold text-gray-700">
-                {{ __('Tags') }}
+                {{ __('Associated Tags') }}
               </label>
+              <p class="mt-2 text-sm text-gray-500">
+                {{ __('A list of associated tags with this document. This information is searchable via the document search. ') }}
+              </p>
               <div class="mt-1" x-show="editMode">
-                <input type="text" wire:model.defer="editorTags" x-bind:disabled="!editMode" class="border form-input rounded-md shadow-sm placeholder-gray-400 form-input mt-1 block w-full focus:border-gray-500 focus:bg-white focus:ring-0" />
+                <input type="text" wire:model.defer="editorTags" x-bind:disabled="!editMode" class="border form-input rounded-md shadow-sm form-input mt-1 block w-full focus:border-gray-500 focus:bg-white focus:ring-0" />
               </div>
               <div class="mt-1" x-show="!editMode">
-                <?php echo $tagsHtml ?>
+                @forelse ($document->simpleTags as $tag)
+                    <span class="px-4 py-2 inline-flex text-lg leading-5 font-semibold rounded-full text-white bg-orange-500">
+                        <!-- Heroicon name: calendar -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0 mr-1.5 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                        </svg>
+                        {{ $tag }}
+                    </span>
+                @empty
+                    <p>{{ __('No tags available.') }}</p>
+                @endforelse
               </div>
-              <p class="mt-2 text-sm text-gray-500">
-                {{ __('A list of associated tags with this document.') }}
-              </p>
             </div>
             <div>
-              <label for="content" class="block font-medium text-sm text-gray-700 block text-sm font-bold text-gray-700">
-                {{ __('Content') }}
+              <label for="dates" class="block font-medium text-sm text-gray-700 block text-sm font-bold text-gray-700">
+                {{ __('Metioned Dates') }}
               </label>
+              <p class="mt-2 text-sm text-gray-500">
+                {{ __('A list of dates that are metioned in the content of the document. This information is automatically derived from the textual content (see below) and cannot be edited directly. You are able to filter by this information in the document search.') }}
+              </p>
+              <div class="mt-1 space-x-2">
+                @forelse ($document->dates as $date)
+                    <div class="float-left flex flex-wrap items-stretch w-56 mb-4 relative">
+                        <div class="flex -mr-px bg-gray-200 rounded rounded-r-none border border-gray-500 border-r-0">
+                            <span class="flex items-center leading-normal px-3 whitespace-no-wrap">
+                                <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                            </span>
+                        </div>	
+                        <input type="date" class="text-gray-600 bg-gray-100 border-gray-500 flex-shrink flex-grow flex-auto leading-normal w-px flex-1 border h-10 rounded rounded-l-none px-3 relative" disabled="disabled" value="{{ $date->date_value }}">
+                    </div>
+                @empty
+                    <p>{{ __('No dates available.') }}</p>
+                @endforelse
+              </div>
+            </div>
+            <div class="clear-left">
+              <label for="content" class="block font-medium text-sm text-gray-700 block text-sm font-bold text-gray-700">
+                {{ __('Textual Content') }}
+              </label>
+              <p class="mt-2 text-sm text-gray-500">
+                {{ __('A textual representation of the content of this document. This information is searchable via the document search. Therefore, you should change it only with caution.') }}
+              </p>
               <div class="mt-1">
-                <textarea wire:model.defer="content" x-bind:disabled="!editMode" x-bind:class="{ 
+                <textarea wire:model.defer="content" placeholder="{{ __('No content available.') }}" x-bind:disabled="!editMode" x-bind:class="{ 
                         'text-gray-600 bg-gray-100' : !editMode, 
                         'border' : editMode 
                     }" rows="12" class="form-input rounded-md shadow-sm placeholder-gray-400 form-input mt-1 block w-full focus:border-gray-500 focus:bg-white focus:ring-0"></textarea>
               </div>
-              <p class="mt-2 text-sm text-gray-500">
-                {{ __('A textual representation of this document that is used in the fulltext search.') }}
-              </p>
             </div>
         </div>
         

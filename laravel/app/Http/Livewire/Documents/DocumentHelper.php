@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire\Documents;
 
+use App\Models\DocumentDate;
 use App\Models\DocumentStatus;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use LaravelViews\Facades\UI;
 use RuntimeException;
@@ -32,13 +34,46 @@ abstract class DocumentHelper {
         return UI::badge(DocumentStatus::asLabel($status), $type);
     }
 
-    public static function getTagsAsBadges($tagsArray): string {
-        $tagsStr = '';
-        foreach ($tagsArray as $tag) {
-            $tagsStr  .= ' ' . UI::badge($tag);
+    public static function extractDocumentDates($content): array {
+        // extact candidates for dates
+        $patterns = [
+            "/\d{4}\-\d{2}\-\d{2}/", // english pattern (yyyy-MM-dd)
+            "/\d{2}\-\d{2}\-\d{4}/", // english pattern (dd-MM-yyyy)
+            "/\d{2}\.\d{2}\.\d{4}/" // german pattern (dd.MM.yyyy)
+        ];
+        $candidates = [];
+        foreach ($patterns as $pattern) {
+            if (preg_match_all($pattern, $content, $matches)) {
+                $candidates = array_merge($candidates, $matches[0]);
+            }
+        }
+        $candidates = array_unique($candidates);
+
+        // remove invalid dates
+        $result = [];
+        foreach ($candidates as $dateValue) {
+            if ($datetime = strtotime($dateValue)) {
+                array_push($result, Carbon::createFromTimestamp($datetime));
+            }
+        }
+        
+        return $result;
+    }
+
+    public static function refreshDocumentDates($document) {
+        // Guard: if content did not change, then there is no need to refresh dates
+        if ($document->isClean('content')) {
+            return;
         }
 
-        return $tagsStr;
+        // delete all existing dates for the document
+        $document->dates()->delete();
+
+        // extract new dates from textual content and add them to the document again
+        $dateArr = DocumentHelper::extractDocumentDates($document->content);
+        foreach ($dateArr as $date) {
+            $document->dates()->save(new DocumentDate(['date_value' => $date]));
+        }
     }
 
     public static function handleDeleteAction($document) {
