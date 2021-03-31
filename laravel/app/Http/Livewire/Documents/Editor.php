@@ -88,7 +88,7 @@ class Editor extends ComponentBase {
     public function save() {
         $this->document->filename = $this->filename;
         $this->document->content = $this->content;
-        $tags = explode(",", $this->editorTags);
+        $tags = is_array($this->editorTags) ? $this->editorTags : explode(",", $this->editorTags);
         $this->document->syncTags($tags);
         $this->document->saveAndUpdateStatus();
 
