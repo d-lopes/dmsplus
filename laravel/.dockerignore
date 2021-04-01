@@ -1,9 +1,14 @@
 node_modules/*
 vendor/*
+/public/css/*
+/public/files/*
+/public/js/*
+/public/storage/*
+/public/vendor/*
 storage/framework/cache/data/*
 storage/framework/sessions/*
 storage/framework/testing/*
 storage/framework/views/*
 storage/logs/*
-storage/search
+storage/search/*
 tests/*

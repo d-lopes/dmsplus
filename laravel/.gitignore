@@ -1,6 +1,10 @@
 /node_modules
 /public/hot
+/public/css
+/public/files
+/public/js
 /public/storage
+/public/vendor
 /storage/search
 /storage/*.key
 /storage/*.index

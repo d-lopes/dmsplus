@@ -13,6 +13,9 @@ if ! [[ -f "$INIT_INDICATOR_FILE" ]]; then
   fi
 
   php artisan key:generate
+  php artisan vendor:publish --tag=public --provider='LaravelViews\LaravelViewsServiceProvider' --force
+  php artisan view:clear
+  
   echo "true" >> $INIT_INDICATOR_FILE
 fi
 
