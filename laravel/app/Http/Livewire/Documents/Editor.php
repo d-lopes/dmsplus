@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Documents;
 
 use App\Http\Livewire\Common\ComponentBase;
+use App\Http\Resources\DocumentWrapper;
 use App\Models\Document;
 use App\Models\DocumentStatus;
 use Illuminate\Http\Request;
@@ -51,7 +52,9 @@ class Editor extends ComponentBase {
         try {
             $filename = $this->document->filename;
 
-            DocumentHelper::handleDeleteAction($this->document);
+            $wrapper = new DocumentWrapper($this->document);
+            $wrapper->handleDeleteAction();
+
             $this->success( __('Document ' . $filename . ' was successfully deleted') );
 
             redirect()->route('document.list');
@@ -80,7 +83,9 @@ class Editor extends ComponentBase {
 
         $currentDate =  date('Y-m-d');
         $this->document->path = $this->editorFileinput->store($currentDate, ['disk' => 'documents']);
-        $this->document->saveAndUpdateStatus();
+
+        $wrapper = new DocumentWrapper($this->document);
+        $wrapper->saveAndEnrich();
 
         $this->success( __('File was successfully added to document ' . $this->filename . '.') );
     }
@@ -88,10 +93,11 @@ class Editor extends ComponentBase {
     public function save() {
         $this->document->filename = $this->filename;
         $this->document->content = $this->content;
-        DocumentHelper::refreshDocumentDates($this->document);
         $tags = is_array($this->editorTags) ? $this->editorTags : explode(",", $this->editorTags);
         $this->document->syncTags($tags);
-        $this->document->saveAndUpdateStatus();
+        
+        $wrapper = new DocumentWrapper($this->document);
+        $wrapper->saveAndEnrich();
         
         $this->success( __('Canges to document ' . $this->filename . ' were successfully saved.') );
     }

@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use App\Http\Livewire\Documents\DocumentHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Scout\Searchable;
 use Spatie\Tags\HasTags;
@@ -77,16 +75,6 @@ class Document extends Model
 
     public function markAsIncomplete() {
         $this->status = DocumentStatus::INCOMPLETE;
-    }
-
-    public function saveAndUpdateStatus(array $options = []) {
-        if ( empty ($this->content) || empty ($this->path)) { 
-            $this->markAsIncomplete();
-        } else { 
-            $this->markAsPublished();
-        }
-        
-        $this->save($options);
     }
 
      /**

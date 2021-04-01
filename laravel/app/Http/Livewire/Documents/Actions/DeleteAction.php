@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Documents\Actions;
 
-use App\Http\Livewire\Documents\DocumentHelper;
+use App\Http\Resources\DocumentWrapper;
 use LaravelViews\Actions\Action;
 use LaravelViews\Actions\Confirmable;
 use RuntimeException;
@@ -33,9 +33,10 @@ class DeleteAction extends Action {
      */
     public function handle($model) {
         try {
-            $filename = $model->filename;
-            DocumentHelper::handleDeleteAction($model);
-            $this->success( __('Document ' . $filename . ' was successfully deleted') );
+            $wrapper = new DocumentWrapper($model);
+            $wrapper->handleDeleteAction();
+
+            $this->success( __('Document ' . $model->filename . ' was successfully deleted') );
         } catch (RuntimeException $e) {
             $this->error( __('File could not be deleted! Reason: ') . $e->getMessage());
         }

@@ -8,6 +8,7 @@ use App\Http\Livewire\Documents\DocumentHelper;
 use App\Http\Requests\CreateDocumentRequest;
 use App\Http\Resources\DocumentCollection;
 use App\Http\Resources\DocumentResource;
+use App\Http\Resources\DocumentWrapper;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -50,8 +51,8 @@ class DocumentApiController extends Controller
         $request->validated(); 
         
         $document = new Document($request->all());
-        DocumentHelper::refreshDocumentDates($document);
-        $document->save();
+        $wrapper = new DocumentWrapper($this->document);
+        $wrapper->saveAndEnrich();
 
         return response()->json($document, 201);
     }
@@ -74,7 +75,8 @@ class DocumentApiController extends Controller
 
         // update document path and status in DB
         $document->path = $path;
-        $document->saveAndUpdateStatus();
+        $wrapper = new DocumentWrapper($this->document);
+        $wrapper->saveAndEnrich();
 
         return Storage::url($path);
     }
@@ -86,8 +88,8 @@ class DocumentApiController extends Controller
         }
 
         $document->update($request->all());
-        DocumentHelper::refreshDocumentDates($document);
-        $document->saveAndUpdateStatus();
+        $wrapper = new DocumentWrapper($this->document);
+        $wrapper->saveAndEnrich();
         
         return response()->json([
             'message' => 'document with Id successfully updated'
@@ -100,7 +102,8 @@ class DocumentApiController extends Controller
             throw new ModelNotFoundException("resource with Id $id does not exist");
         }
 
-        DocumentHelper::handleDeleteAction($document);
+        $wrapper = new DocumentWrapper($this->document);
+        $wrapper->handleDeleteAction();
     
         return response()->json([
             'message' => 'document with Id successfully deleted'

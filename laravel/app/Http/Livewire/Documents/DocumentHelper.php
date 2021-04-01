@@ -60,35 +60,4 @@ abstract class DocumentHelper {
         return $result;
     }
 
-    public static function refreshDocumentDates($document) {
-        // Guard: if content did not change, then there is no need to refresh dates
-        if ($document->isClean('content')) {
-            return;
-        }
-
-        // delete all existing dates for the document
-        $document->dates()->delete();
-
-        // extract new dates from textual content and add them to the document again
-        $dateArr = DocumentHelper::extractDocumentDates($document->content);
-        foreach ($dateArr as $date) {
-            $document->dates()->save(new DocumentDate(['date_value' => $date]));
-        }
-    }
-
-    public static function handleDeleteAction($document) {
-        // delete file from storage, if it exists
-        $exists = Storage::disk('documents')->exists($document->path);
-        if ($exists) {
-            Storage::disk('documents')->delete($document->path);
-        }
-
-        // make sure the file is really gone
-        $exists = Storage::disk('documents')->exists($document->path);
-        if ($exists) {
-            throw new RuntimeException('File at ' . $document->path . ' could not be deleted!');
-        } else {
-            $document->delete();
-        }
-    }
 }
