@@ -1,6 +1,6 @@
 <div>
 
-     {{-- alerts --}}
+    {{-- alerts --}}
     @if (session()->has('message'))
         @php
             $type = session('messageType');              
@@ -29,7 +29,7 @@
         </div>
     @endif
 
-    {{-- confirmation --}}
+    {{-- confirmations --}}
     @if (session()->has('confirmationMessage'))
         <div class="fixed bottom-0 inset-x-0 px-4 pb-4 sm:inset-0 sm:flex sm:items-center sm:justify-center">
             <div class="fixed inset-0 transition-opacity">
@@ -68,6 +68,50 @@
                     @endcomponent
                 </span>
                 </div>
+            </div>
+        </div>
+    @endif
+
+    {{-- hints --}}
+    @if( $document->has_duplicates )
+        <div class="flex bg-yellow-200 w-full mb-4 border">
+            <div class="w-16 bg-yellow-400">
+                <div class="p-4">
+                    <!-- Heroicon name: calendar -->
+                    <svg class="h-8 w-8 text-yellow-800 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <path d="M503.191 381.957c-.055-.096-.111-.19-.168-.286L312.267 63.218l-.059-.098c-9.104-15.01-23.51-25.577-40.561-29.752-17.053-4.178-34.709-1.461-49.72 7.644a66 66 0 0 0-22.108 22.109l-.058.097L9.004 381.669c-.057.096-.113.191-.168.287-8.779 15.203-11.112 32.915-6.569 49.872 4.543 16.958 15.416 31.131 30.62 39.91a65.88 65.88 0 0 0 32.143 8.804l.228.001h381.513l.227.001c36.237-.399 65.395-30.205 64.997-66.444a65.86 65.86 0 0 0-8.804-32.143zm-56.552 57.224H65.389a24.397 24.397 0 0 1-11.82-3.263c-5.635-3.253-9.665-8.507-11.349-14.792a24.196 24.196 0 0 1 2.365-18.364L235.211 84.53a24.453 24.453 0 0 1 8.169-8.154c5.564-3.374 12.11-4.381 18.429-2.833 6.305 1.544 11.633 5.444 15.009 10.986L467.44 402.76a24.402 24.402 0 0 1 3.194 11.793c.149 13.401-10.608 24.428-23.995 24.628z"/><path d="M256.013 168.924c-11.422 0-20.681 9.26-20.681 20.681v90.085c0 11.423 9.26 20.681 20.681 20.681 11.423 0 20.681-9.259 20.681-20.681v-90.085c.001-11.421-9.258-20.681-20.681-20.681zM270.635 355.151c-3.843-3.851-9.173-6.057-14.624-6.057a20.831 20.831 0 0 0-14.624 6.057c-3.842 3.851-6.057 9.182-6.057 14.624 0 5.452 2.215 10.774 6.057 14.624a20.822 20.822 0 0 0 14.624 6.057c5.45 0 10.772-2.206 14.624-6.057a20.806 20.806 0 0 0 6.057-14.624 20.83 20.83 0 0 0-6.057-14.624z"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="w-auto text-grey-darker items-center p-4 text-yellow-800">
+                <span class="text-lg font-bold">
+                    {{__('Warning')}}
+                </span>
+                <p class="leading-tight pt-2 pb-4 text-gray-800">
+                    {{__('The following documents are potential duplicates to this document')}}:
+                </p>
+                <ul class="spacing-y-0">
+                    @foreach ($document->duplicates as $duplicate)
+                        <li class="flex text-gray-800">
+                            <!-- feather icon name: file -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 mt-1 mr-1.5 h-4 w-4">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                            <a href="{{ route('document.show', ['id' => $duplicate->id]) }}" class="hover:text-blue-500 hover:underline">{{ $duplicate->filename }} ({{__('from')}} {{ $duplicate->created_at }})</a>
+                        </li>
+                    @endforeach
+                </ul>
+                <p class="leading-tight pt-4 text-gray-800">
+                    @if( $document->is_original )
+                        {{__('The current document has the oldest creation date and thus might be the original. Please consider deleting the documents listed above.')}}
+                    @else
+                        {{__('The current document does NOT have the oldest creation date and thus is probably NOT the original. Please consider deleting the current document.')}}
+                    @endif
+                </p>
             </div>
         </div>
     @endif
@@ -305,9 +349,9 @@
                 <input type="text" wire:model.defer="editorTags" x-bind:disabled="!editMode" class="border form-input rounded-md shadow-sm form-input mt-1 block w-full focus:border-gray-500 focus:bg-white focus:ring-0" />
               </div>
               <div class="mt-1" x-show="!editMode">
-                @forelse ($document->simpleTags as $tag)
+                @forelse ($document->simple_tags as $tag)
                     <span class="px-4 py-2 inline-flex text-lg leading-5 font-semibold rounded-full text-white bg-orange-500">
-                        <!-- Heroicon name: calendar -->
+                        <!-- Heroicon name: tag -->
                         <svg xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0 mr-1.5 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                         </svg>

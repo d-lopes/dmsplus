@@ -60,4 +60,8 @@ abstract class DocumentHelper {
         return $result;
     }
 
+    public static function generateHashValue($content): string {
+        return md5($content);
+    }
+
 }

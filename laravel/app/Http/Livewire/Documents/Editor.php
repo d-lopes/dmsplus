@@ -36,7 +36,7 @@ class Editor extends ComponentBase {
     {
         $this->filename = $document->filename;
         $this->content = $document->content;
-        $this->editorTags = $document->simpleTags;        
+        $this->editorTags = $document->simple_tags;        
         $this->mode = $request->mode;
     }
 
