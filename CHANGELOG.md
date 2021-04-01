@@ -7,8 +7,15 @@ This overview contains all changes done for the dms+ appliaction since its first
 ## unreleased changes
 
 ### Features
+- introduce tagging functionality for documents  - see [issue #6](https://github.com/d-lopes/dmsplus/issues/6)
+- document dates made available as filters in the document search - see [issue #14](https://github.com/d-lopes/dmsplus/issues/14)
+- identification of duplicate files/documents - see [issue #24](https://github.com/d-lopes/dmsplus/issues/24)
+- Redesign the UI to provide a better look an feel (came naturally with Larvacel 8 migration)
 
 ### Bugfixes and improvements
+- Migration to Laravel 8.5
+- Bump version to OCRmyPDF v11.7
+- restart script optimizations
 
 ## 25.12.2020 - 1.2.0
 

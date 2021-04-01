@@ -6,16 +6,32 @@ Features
 Currently, the application has the following capabilities:
 
 * automatic ingestion of new PDF files via `/inbox` folder
-* extraction of included texts via OCR scan
-* text search on an index of the OCR'ed files
+* automatic extraction of included texts via OCR scan
+* automatic recognition of metioned dates in the documents textual contents
+* automatic identification of potential duplicates (based on mimetype, file size and textual content)
+* text and tag related document search on an index of the OCR'ed files
+* status and date related filters in document search
 * visualization of PDF file in embeded PDF viewer
-* manual correction of determined text after OCR scan
+* tagging functionality to organize documents
+* correction of determined text after OCR scan
+* upload of documents via web browser (due to failing ingestion of new PDF files from `/inbox` folder)
+* creation of new documents via web browser
+* deletion of documents (e. g. because they are corrupt or have been identified as duplicates)
 
 Download
 ========
 
 * [Version 1.2.0](https://github.com/d-lopes/dmsplus/releases/tag/1.2.0)
 * [older versions](https://github.com/d-lopes/dmsplus/releases)
+
+System Requirements
+===================
+
+* min. 2 CPU (2.00GHz)
+* min. 2 GB RAM
+* pre-installed docker and docker-compose
+
+_Hint: I run this on my Synology DS218+ with 4GB extra RAM without any issues._
 
 Getting Started
 ===============
