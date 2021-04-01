@@ -105,20 +105,27 @@ class Document extends Model
     }
 
     public function getDuplicatesAttribute() {
-        // Guard: ensure all needed inforamation is available
-        if (empty($this->md5_hash) && empty($this->size) && empty($this->mime_type)) {
+        // Guard: exclude documents with PENDING status
+        if ($this->status == DocumentStatus::PENDING) {
             return; 
         }
 
         // collect matching documents (except for the current document)
         $result = Document::where([
                 ['id', '<>', $this->id],
+                ['status', '<>', DocumentStatus::PENDING],
                 ['md5_hash', '=', $this->md5_hash],
             ])
             ->orWhere([
                 ['id', '<>', $this->id],
+                ['status', '<>', DocumentStatus::PENDING],
                 ['size', '=', $this->size],
                 ['mime_type', '=', $this->mime_type],
+            ])
+            ->orWhere([
+                ['id', '<>', $this->id],
+                ['status', '<>', DocumentStatus::PENDING],
+                ['filename', '=', $this->filename],
             ])
             ->orderBy('created_at', 'asc') // order by creation date in ascending order => oldest document is on top
             ->get();
@@ -127,13 +134,20 @@ class Document extends Model
     }
 
     public function getHasDuplicatesAttribute() {
-        $duplicates = $this->duplicates;
-        return isset($duplicates) ? $duplicates->count() > 0 : false;
+        $duplicates = $this->getDuplicatesAttribute();
+        return (!empty($duplicates) && $duplicates->count() > 0);
     }
         
     public function getIsOriginalAttribute() {
-        $duplicates = $this->duplicates;
-        return isset($duplicates) ? $duplicates->first()->created_at > $this->created_at : false;
+        // Guard: if there are no duplicates then this is automatically an original
+        if (!$this->getHasDuplicatesAttribute()) {
+            Log::info('no duplicates!');
+            return true; 
+        }
+
+        // check duplicates
+        $oldest = $this->duplicates->first();
+        return $oldest->created_at < $this->created_at;
     }
 
 }

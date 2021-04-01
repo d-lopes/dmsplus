@@ -23,14 +23,19 @@ class AddFilesizeAndMimetype2DocumentsTable extends Migration
         });
 
         // add file size, mime type and md5 hash for all existing documents
-        DB::table('documents')->select(['path', 'content'])->cursor()->each(function ($document) {
-            if (Storage::disk('documents')->exists($document->path)) {
-                $document->size = Storage::disk('documents')->size($document->path);
-                $document->mime_type = "application/pdf"; // currently we are only able to add PDF files anyways
-            }
-            if (isset($document->content)) {
-                $document->md5_hash = DocumentHelper::generateHashValue($document->content);
-            }
+        DB::table('documents')->select(['id', 'path', 'content'])->cursor()->each(function ($document) {
+            $exists = Storage::disk('documents')->exists($document->path);
+            $size = $exists ? Storage::disk('documents')->size($document->path) : null;
+            $mime_type = $exists ? "application/pdf" : null; // currently we are only able to add PDF files anyways
+            $md5_hash = isset($document->content) ? DocumentHelper::generateHashValue($document->content) : null;
+            
+            DB::table('documents')
+                ->where('id', $document->id)
+                ->update([
+                    'md5_hash' => $md5_hash,
+                    'size' => $size,
+                    'mime_type' => $mime_type
+                ]);
         });
     }
 

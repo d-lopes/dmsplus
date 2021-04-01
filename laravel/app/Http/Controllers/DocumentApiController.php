@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Document;
 use App\Exceptions\InvalidRequestException;
-use App\Http\Livewire\Documents\DocumentHelper;
 use App\Http\Requests\CreateDocumentRequest;
 use App\Http\Resources\DocumentCollection;
 use App\Http\Resources\DocumentResource;
@@ -51,7 +50,7 @@ class DocumentApiController extends Controller
         $request->validated(); 
         
         $document = new Document($request->all());
-        $wrapper = new DocumentWrapper($this->document);
+        $wrapper = new DocumentWrapper($document);
         $wrapper->saveAndEnrich();
 
         return response()->json($document, 201);
@@ -75,7 +74,7 @@ class DocumentApiController extends Controller
 
         // update document path and status in DB
         $document->path = $path;
-        $wrapper = new DocumentWrapper($this->document);
+        $wrapper = new DocumentWrapper($document);
         $wrapper->saveAndEnrich();
 
         return Storage::url($path);
@@ -88,7 +87,7 @@ class DocumentApiController extends Controller
         }
 
         $document->update($request->all());
-        $wrapper = new DocumentWrapper($this->document);
+        $wrapper = new DocumentWrapper($document);
         $wrapper->saveAndEnrich();
         
         return response()->json([
@@ -102,7 +101,7 @@ class DocumentApiController extends Controller
             throw new ModelNotFoundException("resource with Id $id does not exist");
         }
 
-        $wrapper = new DocumentWrapper($this->document);
+        $wrapper = new DocumentWrapper($document);
         $wrapper->handleDeleteAction();
     
         return response()->json([

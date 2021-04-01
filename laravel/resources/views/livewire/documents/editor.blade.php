@@ -42,10 +42,10 @@
                 </div>
                 <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                     <div class="mt-2">
-                    {{ session('confirmationMessage') }}
+                        {{ session('confirmationMessage') }}
                     </div>
                     <span wire:loading class="mr-4">
-                    Executing action
+                        {{ __('Executing action') }}
                     </span>
                 </div>
                 </div>
