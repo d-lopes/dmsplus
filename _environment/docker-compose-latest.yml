@@ -1,0 +1,96 @@
+version: "3.5"
+
+services:  
+
+  # OCR utility
+  scanner:
+      image: dl0pes/dmsocr:latest
+      container_name: scanner
+      restart: unless-stopped
+      tty: true
+      environment:
+        WEB_HOST: webserver
+      volumes:
+        - webuploads:/var/run/uploads
+        - ./directories/inbox:/var/run/inbox
+        - ./directories/err:/var/run/err
+        - ./directories/logs/scanner:/var/run/logs
+      networks:
+        - dms_net
+      depends_on: 
+        - webserver
+
+  # webapp
+  app:
+      image: dl0pes/dmsweb:latest
+      container_name: app
+      restart: unless-stopped
+      tty: true
+      env_file: 
+        - ./dms.env
+      environment:
+        DB_HOST: database
+        SERVICE_NAME: app
+        SERVICE_TAGS: dev
+      volumes:
+        - webdata:/var/www
+        - webuploads:/var/www/storage/app/uploads
+        - ./directories/storage/files:/var/www/storage/app/documents
+        - ./directories/storage/search:/var/www/storage/search
+        - ./directories/logs/web:/var/www/storage/logs
+      networks:
+        - dms_net
+      depends_on: 
+        - database
+        
+  #Nginx Service
+  webserver:
+      image: nginx:alpine
+      container_name: webserver
+      restart: unless-stopped
+      tty: true
+      ports:
+        - "9001:80"
+      volumes:
+        - ./directories/storage/files:/var/www/public/files
+        - ./nginx/:/etc/nginx/conf.d/
+        - type: volume
+          source: webdata
+          target: /var/www
+          read_only: true
+      networks:
+        - dms_net
+      depends_on: 
+        - app
+
+  # MySQL database
+  database:
+      image: mysql:8.0
+      container_name: database
+      hostname: database
+      restart: unless-stopped
+      tty: true
+      ports:
+        - 3306:3306
+      volumes:
+          - ./directories/storage/db:/var/lib/mysql
+          - ./mysql.conf:/etc/mysql/my.cnf
+      networks:
+        - dms_net
+      env_file: 
+        - ./dms.env
+      environment:
+        MYSQL_ROOT_PASSWORD:
+        MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+        SERVICE_TAGS: dev
+        SERVICE_NAME: mysql
+        
+#Docker Networks
+networks:
+  dms_net:
+    driver: bridge
+
+#Volumes
+volumes:
+  webdata:
+  webuploads:

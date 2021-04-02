@@ -24,7 +24,13 @@ fi
 docker-compose -p dms -f "$COMPOSE_FILE" down
 
 # remove volume (as it might contain outdated php files)
+echo "Removing volumes (as they might contain outdated php files):"
 docker volume rm dms_webdata
+
+# make sure we really pull the latest image (when we use the 'latest' tag)
+if [ ${COMPOSE_FILE: -11} == "-latest.yml" ]; then
+    docker-compose -p dms -f "$COMPOSE_FILE" pull 
+fi
 
 # start up docker containers
 docker-compose -p dms -f "$COMPOSE_FILE" up -d
