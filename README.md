@@ -21,17 +21,18 @@ Currently, the application has the following capabilities:
 Download
 ========
 
-* [Version 1.2.0](https://github.com/d-lopes/dmsplus/releases/tag/1.2.0)
+* [Version 2.0.0](https://github.com/d-lopes/dmsplus/releases/tag/2.0.0)
 * [older versions](https://github.com/d-lopes/dmsplus/releases)
 
 System Requirements
 ===================
 
-* min. 2 CPU (2.00GHz)
-* min. 2 GB RAM
+* min. 1 CPU (Intel 2.00 GHz)
+* min. 1,5 GB RAM
+* min. 2 GB disk space
 * pre-installed docker and docker-compose
 
-_Hint: I run this on my Synology DS218+ with 4GB extra RAM without any issues._
+_Hint: I run this on my Synology DS218+ with a total of 6GB RAM (i installed 4 GB RAM extra) without any issues._
 
 Getting Started
 ===============

@@ -1,10 +1,15 @@
 # Change Log
-=============
 
 This overview contains all changes done for the dms+ appliaction since its first release (April 2020).
  Changes are listed by release versions which follow [semantic versioning](https://semver.org).  
 
 ## unreleased changes
+
+### Features
+
+### Bugfixes and improvements
+
+## 02.04.2021 - 2.0.0
 
 ### Features
 - introduce tagging functionality for documents  - see [issue #6](https://github.com/d-lopes/dmsplus/issues/6)
