@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Http\Livewire\Documents\DocumentHelper;
+use App\Util\DocumentHelper;
 use App\Models\Document;
 use App\Models\DocumentDate;
 use Illuminate\Support\Facades\Storage;
@@ -23,8 +23,8 @@ class DocumentWrapper {
     }
 
     private function refreshDocumentDates() {
-        // Guard: if content did not change, then there is no need to refresh dates
-        if ($this->document->isClean('content')) {
+        // Guard: if content did not change (for an already persisted document), then there is no need to refresh dates
+        if ($this->document->exists && $this->document->isClean('content')) {
             return;
         }
 
