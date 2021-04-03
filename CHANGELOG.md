@@ -9,6 +9,13 @@ This overview contains all changes done for the dms+ appliaction since its first
 
 ### Bugfixes and improvements
 
+## 02.04.2021 - 2.0.1
+
+### Features
+
+### Bugfixes and improvements
+- fix bug introduced with late refactoring of DocumentHelper class
+
 ## 02.04.2021 - 2.0.0
 
 ### Features
