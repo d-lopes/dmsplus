@@ -13,6 +13,7 @@ use App\Http\Livewire\Documents\Filters\StatusFilter;
 use App\Http\Livewire\Documents\Filters\UpdatedAfterFilter;
 use App\Http\Livewire\Documents\Filters\UpdatedBeforeFilter;
 use App\Models\Document;
+use App\Util\DocumentHelper;
 use Illuminate\Database\Eloquent\Builder;
 use LaravelViews\Facades\Header;
 use LaravelViews\Facades\UI;

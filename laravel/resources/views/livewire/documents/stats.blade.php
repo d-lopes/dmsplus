@@ -27,7 +27,7 @@
                     <li>
                         <a href="{{ route('document.list', ['filters[status-filter]' => $item->type ]) }}">
                             {{ $item->value }}  
-                            <?php echo App\Http\Livewire\Documents\DocumentHelper::getStatusBadge($item->type); ?>
+                            <?php echo App\Util\DocumentHelper::getStatusBadge($item->type); ?>
                         </a>
                     </li>
                 @endforeach

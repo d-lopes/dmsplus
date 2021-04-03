@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Livewire\Documents\DocumentHelper;
+use App\Util\DocumentHelper;
 use App\Models\DocumentDate;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
