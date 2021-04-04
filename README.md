@@ -45,7 +45,7 @@ sh ./dms-restart.sh
 
 > **HINT:** Before you start, please make sure to adjust the contents of dms.env.example to your needs and rename it to dms.env (since this file is referenced from the docker-compose.yml)
 
-Please refer to the [wiki pages](https://github.com/d-lopes/dmsplus/wiki) for further information
+Please refer to the [wiki pages](https://d-lopes.gitbook.io/dmsplus/) for further information
 
 Changelog
 =========
