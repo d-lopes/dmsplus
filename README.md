@@ -21,7 +21,7 @@ Currently, the application has the following capabilities:
 Download
 ========
 
-* [Version 2.0.1](https://github.com/d-lopes/dmsplus/releases/tag/2.0.1)
+* [Version 2.0.2](https://github.com/d-lopes/dmsplus/releases/tag/2.0.2)
 * [older versions](https://github.com/d-lopes/dmsplus/releases)
 
 System Requirements
